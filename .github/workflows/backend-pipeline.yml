@@ -1,0 +1,81 @@
+name: CI/CD Pipeline for ctf-backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Verify Java version
+      run: java -version
+
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/ctf-backend/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
+
+    - name: Build with Maven
+      run: mvn -f ctf-backend/pom.xml clean install -DskipTests
+
+    - name: Run tests
+      run: mvn -f ctf-backend/pom.xml test
+
+    - name: Package application
+      run: mvn -f ctf-backend/pom.xml package
+
+    - name: Archive production artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ctf-backend
+        path: ctf-backend/target/*.jar
+
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   i: github.ref == 'refs/heads/main'
+
+  #   steps:
+  #   - name: Download artifact
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       name: ctf-backend
+  #       path: target/
+
+  #   - name: Deploy to server
+  #     run: |
+  #       scp -o StrictHostKeyChecking=no target/*.jar user@your-server-ip:/path/to/deploy/
+  #       ssh user@your-server-ip 'bash -s' < ./deploy_script.sh
+
+  notify:
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send notification
+      uses: actions/github-script@v3
+      with:
+        script: |
+          const issue = context.issue;
+          const message = `Pipeline failed for ${issue.number} - ${issue.title}`;
+          github.issues.createComment({
+            ...context.repo,
+            issue_number: issue.number,
+            body: message
+          });
