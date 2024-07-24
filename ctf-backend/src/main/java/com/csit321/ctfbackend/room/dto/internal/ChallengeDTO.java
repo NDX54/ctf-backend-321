@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,4 +19,6 @@ public class ChallengeDTO {
     private String name;
     private String description;
 
+    @Schema(defaultValue = "[]")
+    private List<RoomDTO> roomDTOList;
 }

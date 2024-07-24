@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,11 +33,22 @@ public class Room {
     @Column(nullable = false)
     private String description;
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions = new ArrayList<>();
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id", nullable = false)
     private Challenge challenge;
 
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+        question.setRoom(this);
+    }
 
+    public void removeQuestion(Question question) {
+        this.questions.remove(question);
+        question.setRoom(null);
+    }
 
 }

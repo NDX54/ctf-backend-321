@@ -2,7 +2,6 @@ package com.csit321.ctfbackend.room.controller;
 
 import com.csit321.ctfbackend.core.api.APIResponse;
 import com.csit321.ctfbackend.room.dto.internal.ChallengeDTO;
-import com.csit321.ctfbackend.room.model.Challenge;
 import com.csit321.ctfbackend.room.service.ChallengeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

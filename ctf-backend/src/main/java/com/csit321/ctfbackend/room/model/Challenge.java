@@ -1,6 +1,5 @@
 package com.csit321.ctfbackend.room.model;
 
-import com.csit321.ctfbackend.room.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,12 +31,12 @@ public class Challenge {
     private List<Room> rooms = new ArrayList<>();
 
     public void addRoom(Room room) {
-        rooms.add(room);
+        this.rooms.add(room);
         room.setChallenge(this);
     }
 
     public void removeRoom(Room room) {
-        rooms.remove(room);
+        this.rooms.remove(room);
         room.setChallenge(null);
     }
 

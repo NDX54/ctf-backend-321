@@ -1,7 +1,6 @@
 package com.csit321.ctfbackend.user.controller;
 
 import com.csit321.ctfbackend.core.api.APIResponse;
-import com.csit321.ctfbackend.user.service.BaseUserService;
 import com.csit321.ctfbackend.user.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
