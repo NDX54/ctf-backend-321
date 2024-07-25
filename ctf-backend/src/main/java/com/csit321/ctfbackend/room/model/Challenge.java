@@ -1,14 +1,13 @@
 package com.csit321.ctfbackend.room.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

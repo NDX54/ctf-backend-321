@@ -1,22 +1,23 @@
 package com.csit321.ctfbackend.user.model;
 
 import com.csit321.ctfbackend.user.enums.UserType;
+import com.csit321.ctfbackend.user.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
+@Data
+@Builder(builderMethodName = "baseUserBuilder")
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-//@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class BaseUser implements UserDetails {
@@ -44,7 +45,8 @@ public class BaseUser implements UserDetails {
     private UserType userType;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false)
     private boolean isAccountNonExpired;
@@ -59,7 +61,7 @@ public class BaseUser implements UserDetails {
     private boolean isEnabled;
 
 
-    public BaseUser(String username, String email, String password, UserType userType, String role) {
+    public BaseUser(String username, String email, String password, UserType userType, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;

@@ -1,15 +1,16 @@
 package com.csit321.ctfbackend.user.model;
 
 import com.csit321.ctfbackend.user.enums.UserType;
+import com.csit321.ctfbackend.user.model.enums.Role;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Entity
-//@DiscriminatorValue("STUDENT")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Student extends BaseUser {
@@ -18,7 +19,8 @@ public class Student extends BaseUser {
 
     private double score = 0.0;
 
-    public Student(String username, String email, String password, UserType userType, String role, Integer yearLevel, double score) {
+    @Builder(builderMethodName = "studentBuilder")
+    public Student(String username, String email, String password, UserType userType, Role role, Integer yearLevel, double score) {
         super(username, email, password, userType, role);
         this.yearLevel = yearLevel;
         this.score = score;

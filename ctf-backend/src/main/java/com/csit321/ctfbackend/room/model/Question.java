@@ -1,11 +1,11 @@
 package com.csit321.ctfbackend.room.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +23,7 @@ public class Question {
     @Column(nullable = false)
     private String answer;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;

@@ -1,10 +1,14 @@
 package com.csit321.ctfbackend.core.component;
 
+import com.csit321.ctfbackend.core.config.JwtService;
 import com.csit321.ctfbackend.user.enums.UserType;
 import com.csit321.ctfbackend.user.model.BaseUser;
+import com.csit321.ctfbackend.user.model.enums.Role;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -14,8 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
+
+    private final JwtService jwtService;
+    private final BaseUserRepository baseUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${admin.email}")
     private String adminEmail;
@@ -27,15 +35,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private String adminPassword;
 
     boolean alreadySetup = false;
-
-    private BaseUserRepository baseUserRepository;
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public SetupDataLoader(BaseUserRepository baseUserRepository, PasswordEncoder passwordEncoder) {
-        this.baseUserRepository = baseUserRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
 
     @Override
@@ -58,17 +57,19 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private void createAdminUser() {
 
-        BaseUser adminUser = new BaseUser();
-        adminUser.setUsername(adminUsername);
-        adminUser.setEmail(adminEmail);
-        adminUser.setPassword(passwordEncoder.encode(adminPassword));
-        adminUser.setUserType(UserType.BASE_USER);
-        adminUser.setRole("ROLE_ADMIN");
-        adminUser.setAccountNonExpired(true);
-        adminUser.setAccountNonLocked(true);
-        adminUser.setCredentialsNonExpired(true);
-        adminUser.setEnabled(true);
-        baseUserRepository.save(adminUser);
+        var adminUser = BaseUser.baseUserBuilder()
+                .username(adminUsername)
+                .email(adminEmail)
+                .password(passwordEncoder.encode(adminPassword))
+                .userType(UserType.BASE_USER)
+                .role(Role.ADMIN)
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
+                .isEnabled(true)
+                .build();
 
+        jwtService.generateToken(adminUser);
+        baseUserRepository.save(adminUser);
     }
 }

@@ -3,14 +3,13 @@ package com.csit321.ctfbackend.room.model;
 import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

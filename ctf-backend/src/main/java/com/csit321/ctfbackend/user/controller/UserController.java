@@ -44,33 +44,23 @@ public class UserController {
 
     @PostMapping("/user/student")
     public ResponseEntity<?> createStudent(@RequestBody @Valid StudentDTO studentDTO, WebRequest request) {
-        Student newStudent = baseUserService.saveStudent(studentDTO);
+//        Student newStudent = baseUserService.saveStudent(studentDTO);
 
-        return APIResponse.build(
-                baseUserService.convertToStudentDTO(newStudent),
-                "Student created successfully",
-                HttpStatus.OK,
-                request);
+        return APIResponse.build(baseUserService.saveStudent(studentDTO), "Successfully created student", HttpStatus.CREATED, request);
     }
 
     @PostMapping("/user/teacher")
     public ResponseEntity<?> createTeacher(@RequestBody @Valid TeacherDTO teacherDTO, WebRequest request) {
-        Teacher newTeacher = baseUserService.saveTeacher(teacherDTO);
 
-        return APIResponse.build(
-                baseUserService.convertToTeacherDTO(newTeacher),
-                "Teacher created successfully",
-                HttpStatus.OK,
-                request
-        );
+        return APIResponse.build(baseUserService.saveTeacher(teacherDTO), "Successfully created teacher", HttpStatus.CREATED, request);
     }
 
     @PermitAll
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(@RequestBody BaseUserDTO userDTO, WebRequest request) {
-        BaseUserDTO authUser = baseUserService.authenticateUser(userDTO.getEmail(), userDTO.getUsername(), userDTO.getPassword());
+//        BaseUserDTO authUser = baseUserService.authenticateUser(userDTO.getEmail(), userDTO.getUsername(), userDTO.getPassword());
 
-        return APIResponse.build(authUser, "Authenticated user", HttpStatus.OK, request);
+        return APIResponse.build(baseUserService.authenticateUser(userDTO), "Authenticated user", HttpStatus.OK, request);
     }
 
     @PutMapping("/user")
