@@ -1,10 +1,11 @@
 package com.csit321.ctfbackend.user.dto.external;
 
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class PublicStudentDTO extends PublicBaseUserDTO {
 
     private double score = 0.0;
 
+    @Builder(builderMethodName = "publicStudentDTOBuilder")
     public PublicStudentDTO(Long userId,
                             @NotBlank(message = "Username must not be blank")
                             String username,

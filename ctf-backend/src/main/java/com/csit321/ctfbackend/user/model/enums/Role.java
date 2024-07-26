@@ -5,11 +5,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Role {
 
-    ADMIN("Administrator"),
-    MODERATOR("Moderator"),
-    TEACHER("Teacher"),
-    STUDENT("Student");
-
+    ADMIN("ADMIN"),
+    MODERATOR("MODERATOR"),
+    TEACHER("TEACHER"),
+    STUDENT("STUDENT");
 
     private final String value;
     Role(String value) {

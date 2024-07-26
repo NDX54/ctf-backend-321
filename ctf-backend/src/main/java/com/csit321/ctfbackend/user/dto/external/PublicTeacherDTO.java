@@ -3,10 +3,10 @@ package com.csit321.ctfbackend.user.dto.external;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 @NoArgsConstructor
 @Getter
 @Setter
@@ -15,6 +15,7 @@ public class PublicTeacherDTO extends PublicBaseUserDTO {
     @NotBlank(message = "School must not be blank")
     private String school;
 
+    @Builder(builderMethodName = "publicTeacherDTOBuilder")
     public PublicTeacherDTO(Long userId,
                             @NotBlank(message = "Username must not be blank")
                             String username,

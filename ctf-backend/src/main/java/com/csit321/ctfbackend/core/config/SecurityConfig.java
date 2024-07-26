@@ -4,26 +4,17 @@ import com.csit321.ctfbackend.user.model.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
-
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +24,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    private static final String[] AUTH_WHITELIST = {
+    private static final String[] AUTH_PUBLIC_WHITELIST = {
             "/swagger-ui.html/**",
             "/v3/api-docs/**",
             "/v2/api-docs/**",
@@ -46,18 +37,51 @@ public class SecurityConfig {
             "/api/user/username/**",
             "/api/user/student",
             "/api/user/teacher",
-            "/api/user/login"
+            "/api/user/login",
+            "/api/user/staff-login"
     };
+
+    private static final String[] ADMIN_ENDPOINTS = {
+            "/api/user/delete"
+    };
+
+    private static final String[] TEACHER_ENDPOINTS = {
+            "/api/challenge/**",
+            "/api/room/**",
+            "/api/question/**"
+    };
+
+    private static final String[] STUDENT_ENDPOINTS = {
+            "/api/student/**"
+    };
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        return RoleHierarchyImpl.fromHierarchy(
+                "ROLE_ADMIN > ROLE_MODERATOR > ROLE_TEACHER > ROLE_STUDENT"
+        );
+    }
+
+    @Bean
+    public DefaultWebSecurityExpressionHandler customWebSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+        return expressionHandler;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(AUTH_WHITELIST)
+                        .requestMatchers(AUTH_PUBLIC_WHITELIST)
                         .permitAll()
-                        .requestMatchers("/api/user/delete")
+                        .requestMatchers(ADMIN_ENDPOINTS)
                         .hasRole(Role.ADMIN.getValue())
+                        .requestMatchers(TEACHER_ENDPOINTS)
+                        .hasRole(Role.TEACHER.getValue())
+                        .requestMatchers(STUDENT_ENDPOINTS)
+                        .hasRole(Role.STUDENT.getValue())
                         .anyRequest()
                         .authenticated()
                 )

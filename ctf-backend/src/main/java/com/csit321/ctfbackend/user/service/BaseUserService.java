@@ -1,7 +1,7 @@
 package com.csit321.ctfbackend.user.service;
 
 import com.csit321.ctfbackend.core.api.CustomNotFoundException;
-import com.csit321.ctfbackend.core.api.WrongPasswordException;
+import com.csit321.ctfbackend.core.auth.AuthenticationRequest;
 import com.csit321.ctfbackend.core.auth.AuthenticationResponse;
 import com.csit321.ctfbackend.core.config.JwtService;
 import com.csit321.ctfbackend.user.dto.external.PublicBaseUserDTO;
@@ -10,7 +10,7 @@ import com.csit321.ctfbackend.user.dto.external.PublicTeacherDTO;
 import com.csit321.ctfbackend.user.dto.internal.BaseUserDTO;
 import com.csit321.ctfbackend.user.dto.internal.StudentDTO;
 import com.csit321.ctfbackend.user.dto.internal.TeacherDTO;
-import com.csit321.ctfbackend.user.enums.UserType;
+import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.model.Teacher;
@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +36,10 @@ public class BaseUserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final StudentService studentService;
 
     public AuthenticationResponse saveStudent(StudentDTO studentDTO) {
-        var savedStudent = Student.studentBuilder()
+        var savedStudent = Student.studentBuilderEntity()
                 .username(studentDTO.getUsername())
                 .email(studentDTO.getEmail())
                 .password(passwordEncoder.encode(studentDTO.getPassword()))
@@ -58,7 +58,7 @@ public class BaseUserService {
     }
 
     public AuthenticationResponse saveTeacher(TeacherDTO teacherDTO) {
-        var savedTeacher = Teacher.teacherBuilder()
+        var savedTeacher = Teacher.teacherBuilderEntity()
                 .username(teacherDTO.getUsername())
                 .email(teacherDTO.getEmail())
                 .password(passwordEncoder.encode(teacherDTO.getPassword()))
@@ -78,88 +78,112 @@ public class BaseUserService {
 
     public BaseUserDTO convertToSpecificDTO(BaseUser baseUser) {
         if (baseUser instanceof Student student) {
-            return new StudentDTO(
-                    student.getUserId(),
-                    student.getUsername(),
-                    student.getEmail(),
-                    student.getPassword(),
-                    student.getUserType().getValue(),
-                    student.getRole().getValue(),
-                    student.getYearLevel(),
-                    student.getScore());
+
+            return StudentDTO.studentDTOBuilder()
+                    .userId(student.getUserId())
+                    .username(student.getUsername())
+                    .email(student.getEmail())
+                    .password(student.getPassword())
+                    .role(student.getRole().getValue())
+                    .yearLevel(student.getYearLevel())
+                    .score(student.getScore())
+                    .build();
+
         } else if (baseUser instanceof Teacher teacher) {
-            return new TeacherDTO(
-                    teacher.getUserId(),
-                    teacher.getUsername(),
-                    teacher.getEmail(),
-                    teacher.getPassword(),
-                    teacher.getUserType().getValue(),
-                    teacher.getRole().getValue(),
-                    teacher.getSchool());
+
+            return TeacherDTO.teacherDTOBuilder()
+                    .userId(teacher.getUserId())
+                    .username(teacher.getUsername())
+                    .email(teacher.getEmail())
+                    .password(teacher.getPassword())
+                    .userType(teacher.getUserType().getValue())
+                    .role(teacher.getRole().getValue())
+                    .school(teacher.getSchool())
+                    .build();
+
         } else {
-            return new BaseUserDTO(
-                    baseUser.getUserId(),
-                    baseUser.getUsername(),
-                    baseUser.getEmail(),
-                    baseUser.getPassword(),
-                    baseUser.getUserType().getValue(),
-                    baseUser.getRole().getValue());
+
+            return BaseUserDTO.baseUserDTOBuilder()
+                    .userId(baseUser.getUserId())
+                    .username(baseUser.getUsername())
+                    .email(baseUser.getEmail())
+                    .password(baseUser.getPassword())
+                    .userType(baseUser.getUserType().getValue())
+                    .role(baseUser.getRole().getValue())
+                    .build();
+
         }
     }
 
     public PublicBaseUserDTO convertToPublicDTO(BaseUser baseUser) {
         if (baseUser instanceof Student student) {
-            return new PublicStudentDTO(
-                    student.getUserId(),
-                    student.getUsername(),
-                    student.getEmail(),
-                    student.getUserType().getValue(),
-                    student.getYearLevel(),
-                    student.getScore());
+
+            return PublicStudentDTO.publicStudentDTOBuilder()
+                    .userId(student.getUserId())
+                    .username(student.getUsername())
+                    .email(student.getEmail())
+                    .userType(student.getUserType().getValue())
+                    .yearLevel(student.getYearLevel())
+                    .score(student.getScore())
+                    .build();
+
         } else if (baseUser instanceof Teacher teacher) {
-            return new PublicTeacherDTO(
-                    teacher.getUserId(),
-                    teacher.getUsername(),
-                    teacher.getEmail(),
-                    teacher.getUserType().getValue(),
-                    teacher.getSchool());
+
+            return PublicTeacherDTO.publicTeacherDTOBuilder()
+                    .userId(teacher.getUserId())
+                    .username(teacher.getUsername())
+                    .email(teacher.getEmail())
+                    .userType(teacher.getUserType().getValue())
+                    .school(teacher.getSchool())
+                    .build();
+
         } else {
-            return new PublicBaseUserDTO(
-                    baseUser.getUserId(),
-                    baseUser.getUsername(),
-                    baseUser.getEmail(),
-                    baseUser.getUserType().getValue());
+
+            return PublicBaseUserDTO.publicBaseUserDTOBuilder()
+                    .userId(baseUser.getUserId())
+                    .userType(baseUser.getUsername())
+                    .email(baseUser.getEmail())
+                    .userType(baseUser.getUserType().getValue())
+                    .build();
         }
     }
 
-//    public StudentDTO convertToStudentDTO(Student student) {
-//        return new StudentDTO(
-//                student.getUserId(),
-//                student.getUsername(),
-//                student.getEmail(),
-//                student.getPassword(),
-//                student.getUserType().getValue(),
-//                student.getRole(),
-//                student.getYearLevel(),
-//                student.getScore()
-//        );
-//    }
+    public StudentDTO convertToStudentDTO(Student student) {
+
+        return StudentDTO.studentDTOBuilder()
+                .userId(student.getUserId())
+                .username(student.getUsername())
+                .email(student.getEmail())
+                .password(student.getPassword())
+                .role(student.getRole().getValue())
+                .yearLevel(student.getYearLevel())
+                .score(student.getScore())
+                .build();
+    }
+
+    public TeacherDTO convertToTeacherDTO(Teacher teacher) {
+
+        return TeacherDTO.teacherDTOBuilder()
+                .userId(teacher.getUserId())
+                .username(teacher.getUsername())
+                .email(teacher.getEmail())
+                .password(teacher.getPassword())
+                .userType(teacher.getUserType().getValue())
+                .role(teacher.getRole().getValue())
+                .school(teacher.getSchool())
+                .build();
+    }
+
+//    public BaseUserDTO getUser(String email, String username) {
 //
-//    public TeacherDTO convertToTeacherDTO(Teacher teacher) {
-//        return new TeacherDTO(
-//                teacher.getUserId(),
-//                teacher.getUsername(),
-//                teacher.getEmail(),
-//                teacher.getPassword(),
-//                teacher.getUserType().getValue(),
-//                teacher.getRole(),
-//                teacher.getSchool()
-//        );
+//        BaseUser baseUser = findUserByEmailOrUsername(email, username);
+//
+//        return convertToSpecificDTO(baseUser);
 //    }
 
-    public BaseUserDTO getUser(String email, String username) {
+    public BaseUserDTO getUser(AuthenticationRequest authRequest) {
 
-        BaseUser baseUser = findUserByEmailOrUsername(email, username);
+        BaseUser baseUser = baseUserRepository.findByUsername(authRequest.getUsername()).orElseThrow(() -> new CustomNotFoundException("User not found."));
 
         return convertToSpecificDTO(baseUser);
     }
@@ -191,12 +215,14 @@ public class BaseUserService {
     }
 
     public void deleteUser(String email, String username) {
+
         BaseUser baseUserToDelete = findUserByEmailOrUsername(email, username);
 
         baseUserRepository.delete(baseUserToDelete);
     }
 
     public AuthenticationResponse authenticateUser(BaseUserDTO userDTO) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userDTO.getUsername(),
@@ -212,19 +238,8 @@ public class BaseUserService {
                 .build();
     }
 
-//    public BaseUserDTO authenticateUser(String email, String username, String password) {
-//
-//        BaseUser baseUser = findUserByEmailOrUsername(email, username);
-//
-//
-//        if (!passwordEncoder.matches(password, baseUser.getPassword())) {
-//            throw new WrongPasswordException();
-//        }
-//
-//        return convertToSpecificDTO(baseUser);
-//    }
-
     public List<BaseUserDTO> getAllUsers() {
+
         List<BaseUser> baseUsers = baseUserRepository.findAll();
         List<BaseUserDTO> userDTOList = new ArrayList<>();
         for (BaseUser baseUser : baseUsers) {
@@ -234,6 +249,7 @@ public class BaseUserService {
     }
 
     public List<PublicBaseUserDTO> getAllPublicUsers() {
+
         List<BaseUser> baseUsers = baseUserRepository.findAll();
         List<PublicBaseUserDTO> userDTOList = new ArrayList<>();
         for (BaseUser baseUser : baseUsers) {

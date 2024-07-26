@@ -5,6 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,6 +49,15 @@ public class CustomGlobalExceptionHandler {
         });
 
         return APIResponse.build(errors, "There are validation errors", HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException exc, WebRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exc.getLocalizedMessage());
+
+        return APIResponse.build(errors, "Errors were found", HttpStatus.UNAUTHORIZED, request);
     }
 
     @ExceptionHandler(ForbiddenException.class)

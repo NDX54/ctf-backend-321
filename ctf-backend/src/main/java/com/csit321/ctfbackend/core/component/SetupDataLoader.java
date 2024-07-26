@@ -1,18 +1,14 @@
 package com.csit321.ctfbackend.core.component;
 
 import com.csit321.ctfbackend.core.config.JwtService;
-import com.csit321.ctfbackend.user.enums.UserType;
+import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -57,7 +53,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private void createAdminUser() {
 
-        var adminUser = BaseUser.baseUserBuilder()
+        var adminUser = BaseUser.baseUserBuilderEntity()
                 .username(adminUsername)
                 .email(adminEmail)
                 .password(passwordEncoder.encode(adminPassword))

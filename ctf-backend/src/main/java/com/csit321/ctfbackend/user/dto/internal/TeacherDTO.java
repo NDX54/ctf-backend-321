@@ -4,10 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class TeacherDTO extends BaseUserDTO {
     @NotBlank(message = "School must not be blank")
     private String school;
 
+    @Builder(builderMethodName = "teacherDTOBuilder")
     public TeacherDTO(Long userId,
                       @NotBlank(message = "Username must not be blank")
                       String username,

@@ -2,11 +2,12 @@ package com.csit321.ctfbackend.user.dto.internal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class StudentDTO extends BaseUserDTO {
@@ -18,6 +19,7 @@ public class StudentDTO extends BaseUserDTO {
     @Schema(hidden = true)
     private double score = 0.0;
 
+    @Builder(builderMethodName = "studentDTOBuilder")
     public StudentDTO(Long userId,
                       @NotBlank(message = "Username must not be blank")
                       String username,

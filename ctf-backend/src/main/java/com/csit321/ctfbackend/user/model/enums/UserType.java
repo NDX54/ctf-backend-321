@@ -1,4 +1,4 @@
-package com.csit321.ctfbackend.user.enums;
+package com.csit321.ctfbackend.user.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

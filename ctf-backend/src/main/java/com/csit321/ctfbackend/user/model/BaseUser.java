@@ -1,18 +1,19 @@
 package com.csit321.ctfbackend.user.model;
 
-import com.csit321.ctfbackend.user.enums.UserType;
+import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 @Data
-@Builder(builderMethodName = "baseUserBuilder")
+@Builder(builderMethodName = "baseUserBuilderEntity")
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -75,7 +76,7 @@ public class BaseUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getValue()));
     }
 
     @Override
