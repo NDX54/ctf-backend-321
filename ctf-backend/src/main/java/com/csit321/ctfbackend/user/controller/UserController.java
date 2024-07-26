@@ -44,17 +44,6 @@ public class UserController {
         return baseUserService.getPublicUser(null, username);
     }
 
-    @PostMapping("/user/staff-login")
-    public ResponseEntity<?> loginStaff(@RequestBody @Valid AuthenticationRequest authRequest, WebRequest request) {
-        BaseUserDTO user = baseUserService.getUser(authRequest);
-
-        if (user.getRole().equals(Role.STUDENT.getValue())) {
-            return APIResponse.build("Not so fast!", "Students are not allowed to login here", HttpStatus.FORBIDDEN, request);
-        } else {
-            return APIResponse.build(baseUserService.authenticateUser(user), "Authenticated staff user", HttpStatus.OK, request);
-        }
-    }
-
     @PostMapping("/user/student")
     public ResponseEntity<?> createStudent(@RequestBody @Valid StudentDTO studentDTO, WebRequest request) {
 
@@ -69,10 +58,20 @@ public class UserController {
 
     @PermitAll
     @PostMapping("/user/login")
-    public ResponseEntity<?> loginUser(@RequestBody BaseUserDTO userDTO, WebRequest request) {
-//        BaseUserDTO authUser = baseUserService.authenticateUser(userDTO.getEmail(), userDTO.getUsername(), userDTO.getPassword());
+    public ResponseEntity<?> loginUser(@RequestBody AuthenticationRequest authrequest, WebRequest request) {
 
-        return APIResponse.build(baseUserService.authenticateUser(userDTO), "Authenticated user", HttpStatus.OK, request);
+        return APIResponse.build(baseUserService.authenticateUser(authrequest), "Authenticated user", HttpStatus.OK, request);
+    }
+
+    @PostMapping("/user/staff-login")
+    public ResponseEntity<?> loginStaff(@RequestBody @Valid AuthenticationRequest authRequest, WebRequest request) {
+        PublicBaseUserDTO user = baseUserService.authenticateUser(authRequest);
+
+        if (user.getRole().equals(Role.STUDENT.getValue())) {
+            return APIResponse.build("Not so fast!", "Students are not allowed to login here", HttpStatus.FORBIDDEN, request);
+        } else {
+            return APIResponse.build(user, "Authenticated staff user", HttpStatus.OK, request);
+        }
     }
 
     @PutMapping("/user")

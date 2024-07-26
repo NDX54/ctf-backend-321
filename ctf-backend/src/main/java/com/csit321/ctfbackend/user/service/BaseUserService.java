@@ -221,6 +221,18 @@ public class BaseUserService {
         baseUserRepository.delete(baseUserToDelete);
     }
 
+    public PublicBaseUserDTO getUser(String username) {
+
+        BaseUser user = baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("User not found."));
+
+        return PublicBaseUserDTO.publicBaseUserDTOBuilder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .userType(user.getUserType().getValue())
+                .build();
+    }
+
     public AuthenticationResponse authenticateUser(BaseUserDTO userDTO) {
 
         authenticationManager.authenticate(
@@ -234,6 +246,28 @@ public class BaseUserService {
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+    public PublicBaseUserDTO authenticateUser(AuthenticationRequest authRequest) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authRequest.getUsername(),
+                        authRequest.getPassword()
+                )
+        );
+
+        var user = baseUserRepository.findByUsername(authRequest.getUsername()).orElseThrow(() -> new CustomNotFoundException("User not found"));
+        var jwtToken = jwtService.generateToken(user);
+
+        return PublicBaseUserDTO.publicBaseUserDTOBuilder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .userType(user.getUserType().getValue())
+                .role(user.getRole().getValue())
                 .token(jwtToken)
                 .build();
     }

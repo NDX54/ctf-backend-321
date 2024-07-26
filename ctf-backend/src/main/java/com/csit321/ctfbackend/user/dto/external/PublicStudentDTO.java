@@ -27,8 +27,10 @@ public class PublicStudentDTO extends PublicBaseUserDTO {
                             String email,
                             String userType,
                             Integer yearLevel,
+                            String role,
+                            String token,
                             double score) {
-        super(userId, username, email, userType);
+        super(userId, username, email, userType, role, token);
         this.yearLevel = yearLevel;
         this.score = score;
     }

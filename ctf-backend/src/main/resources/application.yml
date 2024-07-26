@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: ctf-backend
+  profiles:
+    active: postgresql
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jackson:
+    serialization:
+      indent-output: true
+  mvc:
+    log-request-details: true
+  security:
+    user:
+      name: admin
+      password: abcd1234
+      roles: ADMIN
+
+server:
+  port: 8085
+
+logging:
+    level:
+      org:
+        springframework:
+          web: TRACE
+        hibernate:
+          validator: TRACE
+
+admin:
+  email: t@t.com
+  username: admin
+  password: abcd1234

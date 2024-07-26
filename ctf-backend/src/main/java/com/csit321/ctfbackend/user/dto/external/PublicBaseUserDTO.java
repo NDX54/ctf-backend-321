@@ -34,4 +34,8 @@ public class PublicBaseUserDTO {
 
     private String userType;
 
+    private String role;
+
+    private String token;
+
 }
