@@ -29,7 +29,7 @@ public class Room {
     private Difficulty difficulty;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "CLOB")
     private String description;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)

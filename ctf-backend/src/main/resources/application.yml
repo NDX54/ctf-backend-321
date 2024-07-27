@@ -31,8 +31,7 @@ logging:
       org:
         springframework:
           web: TRACE
-        hibernate:
-          validator: TRACE
+        hibernate: TRACE
 
 admin:
   email: t@t.com

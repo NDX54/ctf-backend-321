@@ -123,6 +123,7 @@ public class BaseUserService {
                     .username(student.getUsername())
                     .email(student.getEmail())
                     .userType(student.getUserType().getValue())
+                    .role(student.getRole().getValue())
                     .yearLevel(student.getYearLevel())
                     .score(student.getScore())
                     .build();
@@ -134,6 +135,7 @@ public class BaseUserService {
                     .username(teacher.getUsername())
                     .email(teacher.getEmail())
                     .userType(teacher.getUserType().getValue())
+                    .role(teacher.getRole().getValue())
                     .school(teacher.getSchool())
                     .build();
 
@@ -141,9 +143,11 @@ public class BaseUserService {
 
             return PublicBaseUserDTO.publicBaseUserDTOBuilder()
                     .userId(baseUser.getUserId())
+                    .username(baseUser.getUsername())
                     .userType(baseUser.getUsername())
                     .email(baseUser.getEmail())
                     .userType(baseUser.getUserType().getValue())
+                    .role(baseUser.getRole().getValue())
                     .build();
         }
     }

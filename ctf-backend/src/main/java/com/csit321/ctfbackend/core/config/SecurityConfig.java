@@ -37,7 +37,9 @@ public class SecurityConfig {
             "/api/user/student",
             "/api/user/teacher",
             "/api/user/login",
-            "/api/user/staff-login"
+            "/api/user/staff-login",
+            "/ws/**",
+            "/topic/**"
     };
 
     private static final String[] ADMIN_ENDPOINTS = {
