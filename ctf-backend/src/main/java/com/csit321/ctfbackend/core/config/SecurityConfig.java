@@ -32,14 +32,10 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/h2-console/**",
             "/api/users",
-            "/api/user/email/**",
-            "/api/user/username/**",
-            "/api/user/student",
-            "/api/user/teacher",
-            "/api/user/login",
-            "/api/user/staff-login",
+            "/api/user/**",
             "/ws/**",
-            "/topic/**"
+            "/topic/**",
+            "/app/**"
     };
 
     private static final String[] ADMIN_ENDPOINTS = {

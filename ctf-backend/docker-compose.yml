@@ -1,43 +1,58 @@
 
 
 services:
-  postgresdb:
-    image: postgres
-    restart: unless-stopped
-    env_file: ./.env
-    environment:
-      - POSTGRES_USER=$POSTGRESDB_USER
-      - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
-      - POSTGRES_DB=$POSTGRESDB_DATABASE
+  rabbitmq:
+    image: rabbitmq:3.13.6-management-alpine
+    container_name: "rabbitmq"
     ports:
-      - "$POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT"
+      - 5672:5672
+      - 15672:15672
     volumes:
-      - db:/var/lib/postgres
-  app:
-    depends_on:
-      - postgresdb
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ctf-backend
-    restart: no
-    env_file: ./.env
-    ports:
-      - "$SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT"
-    environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:postgresql://postgresdb:$POSTGRES_DOCKER_PORT/$POSTGRES_DB",
-        "spring.datasource.username" : "$POSTGRES_USER",
-        "spring.datasource.password" : "$POSTGRES_PASSWORD",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
-        "spring.jpa.hibernate.ddl-auto" : "create-drop"
-      }'
-    volumes:
-      - .m2:/root/.m2
-    stdin_open: true
-    tty: true
-    links:
-      - postgresdb
+      - ~/.docker-conf/rabbitmq/data:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/data:/var/log/rabbitmq
+    networks:
+      - rabbitmq_go_net
+#  postgresdb:
+#    image: postgres
+#    restart: unless-stopped
+#    env_file: ./.env
+#    environment:
+#      - POSTGRES_USER=$POSTGRESDB_USER
+#      - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+#      - POSTGRES_DB=$POSTGRESDB_DATABASE
+#    ports:
+#      - "$POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT"
+#    volumes:
+#      - db:/var/lib/postgres
+#  app:
+#    depends_on:
+#      - postgresdb
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: ctf-backend
+#    restart: no
+#    env_file: ./.env
+#    ports:
+#      - "$SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT"
+#    environment:
+#      SPRING_APPLICATION_JSON: '{
+#        "spring.datasource.url"  : "jdbc:postgresql://postgresdb:$POSTGRES_DOCKER_PORT/$POSTGRES_DB",
+#        "spring.datasource.username" : "$POSTGRES_USER",
+#        "spring.datasource.password" : "$POSTGRES_PASSWORD",
+#        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+#        "spring.jpa.hibernate.ddl-auto" : "create-drop"
+#      }'
+#    volumes:
+#      - .m2:/root/.m2
+#    stdin_open: true
+#    tty: true
+#    links:
+#      - postgresdb
+#
+#volumes:
+#  db:
 
-volumes:
-  db:
+networks:
+  rabbitmq_go_net:
+    driver: bridge

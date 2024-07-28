@@ -8,6 +8,9 @@ import com.csit321.ctfbackend.room.repository.QuestionRepository;
 import com.csit321.ctfbackend.room.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class QuestionService {
 
@@ -19,20 +22,40 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public QuestionDTO createQuestion(QuestionDTO questionDTO, Long roomId) {
+    public List<QuestionDTO> getQuestionsForRoom(Long roomId) {
+
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomNotFoundException("Room not found."));
-        Question question = new Question();
-        question.setQuestionText(questionDTO.getQuestionText());
-        question.setAnswer(questionDTO.getAnswer());
-        question.setRoom(room);
+
+        List<Question> questionEntityList = room.getQuestions();
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+
+        for (Question question : questionEntityList) {
+
+            questionDTOList.add(convertToQuestionDTO(question));
+        }
+
+        return questionDTOList;
+    }
+
+    public QuestionDTO createQuestion(QuestionDTO questionDTO, Long roomId) {
+
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomNotFoundException("Room not found."));
+
+        var question = Question.builder()
+                .questionText(questionDTO.getQuestionText())
+                .answer(questionDTO.getAnswer())
+                .room(room)
+                .build();
+
         return convertToQuestionDTO(questionRepository.save(question));
     }
 
     private QuestionDTO convertToQuestionDTO(Question question) {
-        QuestionDTO questionDTO = new QuestionDTO();
-        questionDTO.setQuestionId(question.getQuestionId());
-        questionDTO.setQuestionText(question.getQuestionText());
-        questionDTO.setAnswer(question.getAnswer());
-        return questionDTO;
+
+        return QuestionDTO.builder()
+                .questionId(question.getQuestionId())
+                .questionText(question.getQuestionText())
+                .answer(question.getAnswer())
+                .build();
     }
 }

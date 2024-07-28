@@ -10,23 +10,19 @@ import com.csit321.ctfbackend.room.model.Room;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.QuestionRepository;
 import com.csit321.ctfbackend.room.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ChallengeRepository challengeRepository;
     private final QuestionRepository questionRepository;
-
-    public RoomService(RoomRepository roomRepository, ChallengeRepository challengeRepository, QuestionRepository questionRepository) {
-        this.roomRepository = roomRepository;
-        this.challengeRepository = challengeRepository;
-        this.questionRepository = questionRepository;
-    }
 
     public List<RoomDTO> getAllRooms() {
         List<Room> roomsList = roomRepository.findAll();
@@ -36,6 +32,12 @@ public class RoomService {
         }
 
         return roomDTOList;
+    }
+
+    public RoomDTO getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomNotFoundException("Room not found."));
+
+        return convertToRoomDTO(room);
     }
 
     public RoomDTO createRoom(RoomDTO roomDTO, Long challengeId) {
@@ -51,13 +53,14 @@ public class RoomService {
         for (Question question : questionList) {
             questionDTOList.add(convertToQuestionDTO(question));
         }
-        return new RoomDTO(
-                room.getRoomId(),
-                room.getName(),
-                room.getDifficulty().getValue(),
-                room.getDescription(),
-                questionDTOList
-        );
+
+        return RoomDTO.builder()
+                .roomId(room.getRoomId())
+                .name(room.getName())
+                .difficulty(room.getDifficulty().getValue())
+                .description(room.getDescription())
+                .questionDTOList(questionDTOList)
+                .build();
     }
 
     private Room convertToRoomEntity(RoomDTO roomDTO) {
@@ -68,13 +71,6 @@ public class RoomService {
 
         if (roomDTO.getQuestionDTOList() == null || roomDTO.getQuestionDTOList().isEmpty()) {
             room.setQuestions(new ArrayList<>());
-        } else {
-            for (QuestionDTO questionDTO : roomDTO.getQuestionDTOList()) {
-                Question question = new Question();
-                question.setQuestionText(questionDTO.getQuestionText());
-                question.setAnswer(questionDTO.getAnswer());
-                room.addQuestion(question);
-            }
         }
 
         return room;

@@ -36,6 +36,12 @@ public class ChallengeService {
         return challengeDTOS;
     }
 
+    public ChallengeDTO getChallengeById(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found"));
+
+        return convertToChallengeDTO(challenge);
+    }
+
     public ChallengeDTO createChallenge(ChallengeDTO challengeDTO) {
         Challenge challenge = convertToChallengeEntity(challengeDTO);
         return convertToChallengeDTO(challengeRepository.save(challenge));
@@ -47,17 +53,7 @@ public class ChallengeService {
         challenge.setDescription(challengeDTO.getDescription());
         if (challengeDTO.getRoomDTOList() == null || challengeDTO.getRoomDTOList().isEmpty()) {
             challenge.setRooms(new ArrayList<>());
-        } else {
-            for (RoomDTO roomDTO : challengeDTO.getRoomDTOList()) {
-                Room room = new Room();
-                room.setName(roomDTO.getName());
-                room.setDifficulty(Difficulty.valueOf(roomDTO.getDifficulty().toUpperCase()));
-                room.setDescription(roomDTO.getDescription());
-                room.setQuestions(getQuestionEntityList(roomDTO));
-                challenge.addRoom(room);
-            }
         }
-
         return challenge;
     }
 
