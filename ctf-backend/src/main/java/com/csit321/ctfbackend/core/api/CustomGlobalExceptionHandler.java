@@ -23,6 +23,11 @@ import java.util.Map;
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler {
 
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<?> handleJwtException(JwtException exc, WebRequest request) {
+        return APIResponse.build(exc.getMessage(), "JWT Error", HttpStatus.UNAUTHORIZED, request);
+    }
+
     @ExceptionHandler(CustomNotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(CustomNotFoundException exc, WebRequest request) {
         Map<String, String> errors = new HashMap<>();

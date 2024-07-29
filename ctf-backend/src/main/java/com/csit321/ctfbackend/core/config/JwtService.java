@@ -1,9 +1,10 @@
 package com.csit321.ctfbackend.core.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.csit321.ctfbackend.core.api.JwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,11 @@ public class JwtService {
     private static final String SECRET_KEY = "d35c6bc108fd7feaf8e2b04b55abe080cb7d8abd59417aa2760fcd76caeedd2a";
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        try {
+            return extractClaim(token, Claims::getSubject);
+        } catch (Exception e) {
+            throw new JwtException("Failed to extract username from token: " + e.getMessage());
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -35,18 +40,28 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        return Jwts
-                .builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 180 * 24))
-                .signWith(getSignInKey())
-                .compact();
+        try {
+            return Jwts
+                    .builder()
+                    .subject(userDetails.getUsername())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + 1000 * 180 * 24))
+                    .signWith(getSignInKey())
+                    .compact();
+        } catch (Exception e) {
+            throw new JwtException("Failed to generate token: " + e.getMessage());
+        }
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+
+        try {
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        } catch (Exception e) {
+            throw new JwtException("Token validation failed: " + e.getMessage());
+        }
+
     }
 
     private boolean isTokenExpired(String token) {
@@ -58,19 +73,28 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parser()
-                .verifyWith(getSignInKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts
+                    .parser()
+                    .verifyWith(getSignInKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (SignatureException e) {
+            throw new JwtException("Invalid JWT signature: " + e.getMessage());
+        } catch (ExpiredJwtException e) {
+            throw new JwtException("Expired JWT token: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            throw new JwtException("Unsupported JWT token: " + e.getMessage());
+        } catch (MalformedJwtException e) {
+            throw new JwtException("Malformed JWT token: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new JwtException("Illegal JWT token: " + e.getMessage());
+        }
     }
 
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-
-
 }
