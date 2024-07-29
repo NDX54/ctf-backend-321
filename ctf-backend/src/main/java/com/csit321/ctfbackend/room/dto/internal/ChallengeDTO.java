@@ -18,6 +18,9 @@ public class ChallengeDTO {
     private String name;
     private String description;
 
+    @Schema(example = "Beginner")
+    private String difficulty;
+
     @Schema(description = "The list of rooms in a challenge", hidden = true)
     private List<RoomDTO> roomDTOList;
 }

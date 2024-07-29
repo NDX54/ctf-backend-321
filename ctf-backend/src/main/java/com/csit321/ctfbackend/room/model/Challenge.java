@@ -1,5 +1,6 @@
 package com.csit321.ctfbackend.room.model;
 
+import com.csit321.ctfbackend.room.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,9 @@ public class Challenge {
     @Lob
     @Column(nullable = false, columnDefinition = "CLOB")
     private String description;
+
+    @Column(nullable = false)
+    private Difficulty difficulty;
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Room> rooms = new ArrayList<>();

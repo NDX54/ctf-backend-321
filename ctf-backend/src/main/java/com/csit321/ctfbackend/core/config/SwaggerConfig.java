@@ -30,12 +30,8 @@ public class SwaggerConfig {
                                 .addSecuritySchemes("bearerAuth", new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT"))
-                                .addSecuritySchemes("csrfAuth", new SecurityScheme()
-                                        .type(SecurityScheme.Type.APIKEY)
-                                        .name("X-CSRF-TOKEN")
-                                        .in(SecurityScheme.In.HEADER)))
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth").addList("csrfAuth"));
+                                        .bearerFormat("JWT")))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 
 }

@@ -10,6 +10,7 @@ import com.csit321.ctfbackend.room.model.Question;
 import com.csit321.ctfbackend.room.model.Room;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.RoomRepository;
+import org.apache.commons.lang3.builder.Diff;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class ChallengeService {
         Challenge challenge = new Challenge();
         challenge.setName(challengeDTO.getName());
         challenge.setDescription(challengeDTO.getDescription());
+        challenge.setDifficulty(Difficulty.valueOfLabel(challengeDTO.getDifficulty()));
         if (challengeDTO.getRoomDTOList() == null || challengeDTO.getRoomDTOList().isEmpty()) {
             challenge.setRooms(new ArrayList<>());
         }
@@ -71,12 +73,14 @@ public class ChallengeService {
             roomDTOList.add(roomDTO);
         }
 
-        return new ChallengeDTO(
-                challenge.getChallengeId(),
-                challenge.getName(),
-                challenge.getDescription(),
-                roomDTOList
-        );
+
+        return ChallengeDTO.builder()
+                .challengeId(challenge.getChallengeId())
+                .name(challenge.getName())
+                .description(challenge.getDescription())
+                .difficulty(challenge.getDifficulty().getValue())
+                .roomDTOList(roomDTOList)
+                .build();
     }
 
     private List<Question> getQuestionEntityList(RoomDTO roomDTO) {
