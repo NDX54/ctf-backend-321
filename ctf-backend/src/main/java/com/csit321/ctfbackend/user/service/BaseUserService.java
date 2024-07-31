@@ -4,6 +4,9 @@ import com.csit321.ctfbackend.core.api.CustomNotFoundException;
 import com.csit321.ctfbackend.core.auth.AuthenticationRequest;
 import com.csit321.ctfbackend.core.auth.AuthenticationResponse;
 import com.csit321.ctfbackend.core.config.JwtService;
+import com.csit321.ctfbackend.core.token.Token;
+import com.csit321.ctfbackend.core.token.TokenRepository;
+import com.csit321.ctfbackend.core.token.TokenType;
 import com.csit321.ctfbackend.user.dto.external.PublicBaseUserDTO;
 import com.csit321.ctfbackend.user.dto.external.PublicStudentDTO;
 import com.csit321.ctfbackend.user.dto.external.PublicTeacherDTO;
@@ -33,6 +36,7 @@ public class BaseUserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseUserService.class);
     private final BaseUserRepository baseUserRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -49,8 +53,9 @@ public class BaseUserService {
                 .score(0.0)
                 .build();
 
-        baseUserRepository.save(savedStudent);
+        var savedUser = baseUserRepository.save(savedStudent);
         var jwtToken = jwtService.generateToken(savedStudent);
+        saveUserToken(savedUser, jwtToken);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -68,8 +73,9 @@ public class BaseUserService {
                 .school(teacherDTO.getSchool())
                 .build();
 
-        baseUserRepository.save(savedTeacher);
+        var savedUser = baseUserRepository.save(savedTeacher);
         var jwtToken = jwtService.generateToken(savedTeacher);
+        saveUserToken(savedUser, jwtToken);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -220,6 +226,7 @@ public class BaseUserService {
 
     public void deleteUser(String email, String username) {
 
+
         BaseUser baseUserToDelete = findUserByEmailOrUsername(email, username);
 
         baseUserRepository.delete(baseUserToDelete);
@@ -265,6 +272,8 @@ public class BaseUserService {
 
         var user = baseUserRepository.findByUsername(authRequest.getUsername()).orElseThrow(() -> new CustomNotFoundException("User not found"));
         var jwtToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
 
         return PublicBaseUserDTO.publicBaseUserDTOBuilder()
                 .userId(user.getUserId())
@@ -309,5 +318,31 @@ public class BaseUserService {
             throw new CustomNotFoundException("User not found");
         }
 
+    }
+
+    private void revokeAllUserTokens(BaseUser user) {
+        var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getUserId());
+        if (validUserTokens.isEmpty()) {
+            return;
+        }
+
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+
+        tokenRepository.saveAll(validUserTokens);
+    }
+
+    private void saveUserToken(BaseUser user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+
+        tokenRepository.save(token);
     }
 }

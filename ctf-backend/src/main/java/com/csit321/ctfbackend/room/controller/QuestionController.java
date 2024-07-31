@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/question")
 @RequiredArgsConstructor
@@ -16,15 +18,20 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/{roomId}")
-    public ResponseEntity<?> getQuestionsByRoomId(@PathVariable Long roomId) {
+    @GetMapping("/")
+    public List<QuestionDTO> getAllQuestions() {
+        return questionService.getAllQuestions();
+    }
 
-        return ResponseEntity.ok(questionService.getQuestionsForRoom(roomId));
+    @GetMapping("/{challengeId}")
+    public ResponseEntity<?> getQuestionsByRoomId(@PathVariable Long challengeId) {
+
+        return ResponseEntity.ok(questionService.getQuestionsForChallenge(challengeId));
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createQuestion(@RequestParam Long roomId, @RequestBody QuestionDTO questionDTO, WebRequest request) {
-        QuestionDTO newQuestion = questionService.createQuestion(questionDTO, roomId);
+    public ResponseEntity<?> createQuestion(@RequestParam Long challengeId, @RequestBody QuestionDTO questionDTO, WebRequest request) {
+        QuestionDTO newQuestion = questionService.createQuestion(questionDTO, challengeId);
 
         return APIResponse.build(newQuestion, "Question created", HttpStatus.CREATED, request);
     }

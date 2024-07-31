@@ -23,7 +23,7 @@ public class SwaggerConfig {
     @Bean
     OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("CTF API").version("0.0.1"))
+                .info(new Info().title("CTF API").version("0.1.0"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(
                         new Components()

@@ -28,19 +28,20 @@ public class Challenge {
     private String description;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Room> rooms = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
 
-    public void addRoom(Room room) {
-        this.rooms.add(room);
-        room.setChallenge(this);
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+        question.setChallenge(this);
     }
 
-    public void removeRoom(Room room) {
-        this.rooms.remove(room);
-        room.setChallenge(null);
+    public void removeQuestion(Question question) {
+        this.questions.remove(question);
+        question.setChallenge(null);
     }
 
 }

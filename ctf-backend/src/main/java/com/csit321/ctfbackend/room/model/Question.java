@@ -25,6 +25,7 @@ public class Question {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JoinColumn(name = "challenge_id")
+    private Challenge challenge;
+
 }

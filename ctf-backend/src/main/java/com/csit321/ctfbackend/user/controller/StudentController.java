@@ -4,10 +4,7 @@ import com.csit321.ctfbackend.core.api.APIResponse;
 import com.csit321.ctfbackend.user.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 @RestController
@@ -26,4 +23,9 @@ public class StudentController {
 
         return APIResponse.build(score, "Student score updated", HttpStatus.OK, request);
     }
+
+//    @PutMapping("/update")
+//    public ResponseEntity<?> updateStudentInfo(@RequestParam String username) {
+//
+//    }
 }

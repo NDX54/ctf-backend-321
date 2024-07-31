@@ -2,31 +2,46 @@ package com.csit321.ctfbackend.room.service;
 
 import com.csit321.ctfbackend.core.api.CustomNotFoundException;
 import com.csit321.ctfbackend.room.dto.internal.QuestionDTO;
+import com.csit321.ctfbackend.room.model.Challenge;
 import com.csit321.ctfbackend.room.model.Question;
-import com.csit321.ctfbackend.room.model.Room;
+import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.QuestionRepository;
-import com.csit321.ctfbackend.room.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
 
-    private final RoomRepository roomRepository;
+    //private final RoomRepository roomRepository;
+    private final ChallengeRepository challengeRepository;
     private final QuestionRepository questionRepository;
 
-    public QuestionService(RoomRepository roomRepository, QuestionRepository questionRepository) {
-        this.roomRepository = roomRepository;
-        this.questionRepository = questionRepository;
+    public List<QuestionDTO> getAllQuestions() {
+        List<Question> questions = questionRepository.findAll();
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+
+        for (Question question : questions) {
+            var questionDTO = QuestionDTO.builder()
+                    .questionId(question.getQuestionId())
+                    .questionText(question.getQuestionText())
+                    .answer(question.getAnswer())
+                    .build();
+
+            questionDTOS.add(questionDTO);
+        }
+
+        return questionDTOS;
     }
 
-    public List<QuestionDTO> getQuestionsForRoom(Long roomId) {
+    public List<QuestionDTO> getQuestionsForChallenge(Long challengeId) {
 
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomNotFoundException("Room not found."));
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found."));
 
-        List<Question> questionEntityList = room.getQuestions();
+        List<Question> questionEntityList = challenge.getQuestions();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
         for (Question question : questionEntityList) {
@@ -37,14 +52,14 @@ public class QuestionService {
         return questionDTOList;
     }
 
-    public QuestionDTO createQuestion(QuestionDTO questionDTO, Long roomId) {
+    public QuestionDTO createQuestion(QuestionDTO questionDTO, Long challengeId) {
 
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new CustomNotFoundException("Room not found."));
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found."));
 
         var question = Question.builder()
                 .questionText(questionDTO.getQuestionText())
                 .answer(questionDTO.getAnswer())
-                .room(room)
+                .challenge(challenge)
                 .build();
 
         return convertToQuestionDTO(questionRepository.save(question));

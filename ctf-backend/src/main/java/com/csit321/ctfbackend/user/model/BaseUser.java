@@ -1,5 +1,6 @@
 package com.csit321.ctfbackend.user.model;
 
+import com.csit321.ctfbackend.core.token.Token;
 import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Builder(builderMethodName = "baseUserBuilderEntity")
@@ -48,6 +50,9 @@ public class BaseUser implements UserDetails {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @Column(nullable = false)
     private boolean isAccountNonExpired;

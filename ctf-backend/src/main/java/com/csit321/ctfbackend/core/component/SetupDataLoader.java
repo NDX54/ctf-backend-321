@@ -1,11 +1,15 @@
 package com.csit321.ctfbackend.core.component;
 
 import com.csit321.ctfbackend.core.config.JwtService;
+import com.csit321.ctfbackend.core.token.Token;
+import com.csit321.ctfbackend.core.token.TokenRepository;
+import com.csit321.ctfbackend.core.token.TokenType;
 import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
 import jakarta.transaction.Transactional;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -19,6 +23,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private final JwtService jwtService;
     private final BaseUserRepository baseUserRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${admin.email}")
@@ -35,7 +40,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Override
     @Transactional
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void onApplicationEvent(@NonNull ContextRefreshedEvent event) {
         if (alreadySetup) {
             System.out.println("Already setup");
         }
@@ -65,7 +70,17 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 .isEnabled(true)
                 .build();
 
-        jwtService.generateToken(adminUser);
-        baseUserRepository.save(adminUser);
+        var jwtToken = jwtService.generateToken(adminUser);
+        var savedUser = baseUserRepository.save(adminUser);
+
+        var token = Token.builder()
+                .user(savedUser)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+
+        tokenRepository.save(token);
     }
 }

@@ -4,6 +4,7 @@ import com.csit321.ctfbackend.user.model.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,6 +16,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +26,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final LogoutHandler logoutHandler;
+    private final LogoutService logoutService;
 
     private static final String[] AUTH_PUBLIC_WHITELIST = {
             "/swagger-ui.html/**",
@@ -42,13 +47,16 @@ public class SecurityConfig {
             "/api/user/delete"
     };
 
-    private static final String[] TEACHER_ENDPOINTS = {
+//    private static final String[] TEACHER_ENDPOINTS = {
+//            "/api/challenge/**",
+//            "/api/room/**",
+//            "/api/question/**"
+//    };
+
+    private static final String[] STUDENT_TEACHER_ENDPOINTS = {
             "/api/challenge/**",
             "/api/room/**",
-            "/api/question/**"
-    };
-
-    private static final String[] STUDENT_ENDPOINTS = {
+            "/api/question/**",
             "/api/student/**"
     };
 
@@ -75,9 +83,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(ADMIN_ENDPOINTS)
                         .hasRole(Role.ADMIN.getValue())
-                        .requestMatchers(TEACHER_ENDPOINTS)
-                        .hasRole(Role.TEACHER.getValue())
-                        .requestMatchers(STUDENT_ENDPOINTS)
+                        .requestMatchers(STUDENT_TEACHER_ENDPOINTS)
                         .hasRole(Role.STUDENT.getValue())
                         .anyRequest()
                         .authenticated()
@@ -90,6 +96,12 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout
+                        .logoutUrl("/api/user/logout")
+                        .addLogoutHandler(logoutService)
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                        .permitAll()
+                )
                 .build();
     }
 

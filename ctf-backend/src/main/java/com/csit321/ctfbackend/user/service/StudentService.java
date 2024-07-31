@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,20 @@ public class StudentService {
             throw new RuntimeException("User is not a student.");
         }
     }
+
+//    public StudentDTO updateStudentInfo(String username, StudentDTO studentDTO) {
+//        BaseUser baseUser = baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("Student not found"));
+//
+//        if (baseUser instanceof Student student) {
+//
+//            if (!Objects.equals(studentDTO.getEmail(), student.getEmail())) {
+//                student.setEmail(studentDTO.getEmail());
+//            }
+//
+//
+//        }
+//
+//    }
 
     private BaseUser findUserByEmailOrUsername(String email, String username) {
 
