@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @Entity
@@ -22,6 +25,13 @@ public class Question {
 
     @Column(nullable = false)
     private String answer;
+
+    @ElementCollection
+    private List<String> options = new ArrayList<>();
+
+    private double points;
+
+    private int correctOption;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

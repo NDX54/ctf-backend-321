@@ -20,7 +20,6 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
     private final QuestionRepository questionRepository;
-    //private final RoomRepository roomRepository;
 
     public List<ChallengeDTO> getAllChallenges() {
         List<Challenge> challenges = challengeRepository.findAll();
@@ -62,6 +61,9 @@ public class ChallengeService {
             questionDTO.setQuestionId(question.getQuestionId());
             questionDTO.setQuestionText(question.getQuestionText());
             questionDTO.setAnswer(question.getAnswer());
+            questionDTO.setPoints(question.getPoints());
+            questionDTO.setOptions(question.getOptions());
+            questionDTO.setCorrectOption(question.getCorrectOption());
             questionDTOS.add(questionDTO);
         }
 

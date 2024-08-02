@@ -20,7 +20,6 @@ public class StudentController {
     @PatchMapping("/score")
     public ResponseEntity<?> saveStudentScore(@RequestParam String username, @RequestParam double score, WebRequest request) {
         studentService.saveStudentScore(username, score);
-
         return APIResponse.build(score, "Student score updated", HttpStatus.OK, request);
     }
 

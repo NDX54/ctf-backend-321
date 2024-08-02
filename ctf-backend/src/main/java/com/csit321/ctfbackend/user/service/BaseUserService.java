@@ -3,7 +3,7 @@ package com.csit321.ctfbackend.user.service;
 import com.csit321.ctfbackend.core.api.CustomNotFoundException;
 import com.csit321.ctfbackend.core.auth.AuthenticationRequest;
 import com.csit321.ctfbackend.core.auth.AuthenticationResponse;
-import com.csit321.ctfbackend.core.config.JwtService;
+import com.csit321.ctfbackend.core.config.jwt.JwtService;
 import com.csit321.ctfbackend.core.token.Token;
 import com.csit321.ctfbackend.core.token.TokenRepository;
 import com.csit321.ctfbackend.core.token.TokenType;

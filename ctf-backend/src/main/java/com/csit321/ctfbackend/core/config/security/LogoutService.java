@@ -1,4 +1,4 @@
-package com.csit321.ctfbackend.core.config;
+package com.csit321.ctfbackend.core.config.security;
 
 
 import com.csit321.ctfbackend.core.token.TokenRepository;

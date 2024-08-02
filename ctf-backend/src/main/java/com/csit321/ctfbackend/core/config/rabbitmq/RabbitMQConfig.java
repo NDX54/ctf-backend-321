@@ -1,4 +1,4 @@
-package com.csit321.ctfbackend.core.config;
+package com.csit321.ctfbackend.core.config.rabbitmq;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.support.converter.SimpleMessageConverter;

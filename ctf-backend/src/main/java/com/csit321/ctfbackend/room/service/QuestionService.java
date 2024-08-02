@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionService {
 
-    //private final RoomRepository roomRepository;
     private final ChallengeRepository challengeRepository;
     private final QuestionRepository questionRepository;
 
@@ -29,6 +28,9 @@ public class QuestionService {
                     .questionId(question.getQuestionId())
                     .questionText(question.getQuestionText())
                     .answer(question.getAnswer())
+                    .points(question.getPoints())
+                    .options(question.getOptions())
+                    .correctOption(question.getCorrectOption())
                     .build();
 
             questionDTOS.add(questionDTO);
@@ -60,6 +62,9 @@ public class QuestionService {
                 .questionText(questionDTO.getQuestionText())
                 .answer(questionDTO.getAnswer())
                 .challenge(challenge)
+                .points(questionDTO.getPoints())
+                .options(questionDTO.getOptions())
+                .correctOption(questionDTO.getCorrectOption())
                 .build();
 
         return convertToQuestionDTO(questionRepository.save(question));
@@ -71,6 +76,9 @@ public class QuestionService {
                 .questionId(question.getQuestionId())
                 .questionText(question.getQuestionText())
                 .answer(question.getAnswer())
+                .points(question.getPoints())
+                .options(question.getOptions())
+                .correctOption(question.getCorrectOption())
                 .build();
     }
 }

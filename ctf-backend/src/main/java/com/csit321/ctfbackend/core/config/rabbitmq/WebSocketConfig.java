@@ -1,4 +1,4 @@
-package com.csit321.ctfbackend.core.config;
+package com.csit321.ctfbackend.core.config.rabbitmq;
 
 import lombok.NonNull;
 import org.springframework.context.annotation.Configuration;

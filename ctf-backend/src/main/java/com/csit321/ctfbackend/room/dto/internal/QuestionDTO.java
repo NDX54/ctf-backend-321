@@ -3,6 +3,9 @@ package com.csit321.ctfbackend.room.dto.internal;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,5 +22,13 @@ public class QuestionDTO {
 
     @Schema(description = "Answer to the question", example = "4")
     private String answer;
+
+    @Schema(description = "Number of points you can get from a question", example = "50.0")
+    private double points;
+
+    @Schema(description = "Index of the correct answer in the options array, ranging from 0-3.", example = "0")
+    private int correctOption;
+
+    private List<String> options = new ArrayList<>();
 
 }
