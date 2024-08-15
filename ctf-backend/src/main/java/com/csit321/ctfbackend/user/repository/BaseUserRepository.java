@@ -10,12 +10,8 @@ import java.util.Optional;
 @Repository
 public interface BaseUserRepository extends JpaRepository<BaseUser, Long> {
 
-    Optional<BaseUserDTO> findByUserId(Long userId);
     Optional<BaseUser> findByEmailIgnoreCase(String email);
     Optional<BaseUser> findByEmailIgnoreCaseOrUsername(String email, String userName);
-    Optional<BaseUserDTO> findByEmailIgnoreCaseAndPassword(String email, String password);
     Optional<BaseUser> findByUsername(String userName);
-    void deleteByEmailIgnoreCase(String email);
-    void deleteByUsername(String userName);
 
 }

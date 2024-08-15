@@ -18,17 +18,20 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+    // Endpoint to get all questions
     @GetMapping("/")
     public List<QuestionDTO> getAllQuestions() {
         return questionService.getAllQuestions();
     }
 
+    // Endpoint to get questions for a specific challenge by its ID
     @GetMapping("/{challengeId}")
     public ResponseEntity<?> getQuestionsByRoomId(@PathVariable Long challengeId) {
 
         return ResponseEntity.ok(questionService.getQuestionsForChallenge(challengeId));
     }
 
+    // Endpoint to create a new question for a specific challenge
     @PostMapping("/new")
     public ResponseEntity<?> createQuestion(@RequestParam Long challengeId, @RequestBody QuestionDTO questionDTO, WebRequest request) {
         QuestionDTO newQuestion = questionService.createQuestion(questionDTO, challengeId);

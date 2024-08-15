@@ -13,14 +13,21 @@ import java.util.List;
 @Setter
 public class ChallengeDTO {
 
+    // ID of the challenge, hidden from the API response.
     @Schema(hidden = true)
     private Long challengeId;
+
+    // Name of the challenge.
     private String name;
+
+    // Description of the challenge
     private String description;
 
+    // Difficulty level of the challenge
     @Schema(example = "Beginner")
     private String difficulty;
 
+    // List of questions in the challenge
     @Schema(description = "The list of questions in a challenge", hidden = true)
     private List<QuestionDTO> questions;
 }

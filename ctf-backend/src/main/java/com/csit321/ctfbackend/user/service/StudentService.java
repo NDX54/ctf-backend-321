@@ -20,9 +20,11 @@ public class StudentService {
     private final BaseUserRepository baseUserRepository;
     private final ScoreUpdateService scoreUpdateService;
 
+    // This saves the student's score.
     public void saveStudentScore(String username, double score) {
         BaseUser baseUser = findUserByEmailOrUsername(null, username);
 
+        // Check whether the base user is a Student subclass, otherwise throw an error.
         if (baseUser instanceof Student student) {
             DecimalFormat df = new DecimalFormat("0.00");
             df.format(score);
@@ -33,26 +35,15 @@ public class StudentService {
                     .newScore(student.getScore())
                     .build();
 
+            // Sends the score update to RabbitMQ, which is responsible
+            // for sending real-time updates to the score at the frontend.
             scoreUpdateService.sendScoreUpdate(scoreUpdateDTO);
         } else {
             throw new RuntimeException("User is not a student.");
         }
     }
 
-//    public StudentDTO updateStudentInfo(String username, StudentDTO studentDTO) {
-//        BaseUser baseUser = baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("Student not found"));
-//
-//        if (baseUser instanceof Student student) {
-//
-//            if (!Objects.equals(studentDTO.getEmail(), student.getEmail())) {
-//                student.setEmail(studentDTO.getEmail());
-//            }
-//
-//
-//        }
-//
-//    }
-
+    // Gets a user either by their email or username.
     private BaseUser findUserByEmailOrUsername(String email, String username) {
 
         if (email != null && username != null) {

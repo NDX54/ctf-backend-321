@@ -12,6 +12,7 @@ public enum Difficulty {
         this.value = value;
     }
 
+    // Method to get Difficulty enum from string value
     public static Difficulty valueOfLabel(String label) {
         for (Difficulty difficulty : Difficulty.values()) {
             if (difficulty.value.equals(label)) {

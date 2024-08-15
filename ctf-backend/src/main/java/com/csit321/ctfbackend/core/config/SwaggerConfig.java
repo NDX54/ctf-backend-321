@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
+    // Bean definition for grouping public APIs for Swagger
     @Bean
     GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
@@ -20,6 +21,7 @@ public class SwaggerConfig {
                 .build();
     }
 
+    // Bean definition for custom OpenAPI configuration
     @Bean
     OpenAPI customOpenAPI() {
         return new OpenAPI()

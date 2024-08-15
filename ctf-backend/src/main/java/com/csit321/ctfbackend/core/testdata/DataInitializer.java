@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
+// Test data initializer for the application.
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {

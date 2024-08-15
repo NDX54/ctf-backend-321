@@ -184,13 +184,6 @@ public class BaseUserService {
                 .build();
     }
 
-//    public BaseUserDTO getUser(String email, String username) {
-//
-//        BaseUser baseUser = findUserByEmailOrUsername(email, username);
-//
-//        return convertToSpecificDTO(baseUser);
-//    }
-
     public BaseUserDTO getUser(AuthenticationRequest authRequest) {
 
         BaseUser baseUser = baseUserRepository.findByUsername(authRequest.getUsername()).orElseThrow(() -> new CustomNotFoundException("User not found."));
@@ -320,6 +313,7 @@ public class BaseUserService {
 
     }
 
+    // Invalidate all the active tokens, if there are any.
     private void revokeAllUserTokens(BaseUser user) {
         var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getUserId());
         if (validUserTokens.isEmpty()) {

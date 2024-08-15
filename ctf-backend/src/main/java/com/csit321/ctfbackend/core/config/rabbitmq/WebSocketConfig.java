@@ -7,10 +7,12 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+// Configuration class for WebSocket message broker.
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    // Configure the message broker.
     @Override
     public void configureMessageBroker(@NonNull MessageBrokerRegistry config) {
         WebSocketMessageBrokerConfigurer.super.configureMessageBroker(config);
@@ -18,6 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.setApplicationDestinationPrefixes("/app");
     }
 
+    // Register STOMP endpoints.
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
         WebSocketMessageBrokerConfigurer.super.registerStompEndpoints(registry);

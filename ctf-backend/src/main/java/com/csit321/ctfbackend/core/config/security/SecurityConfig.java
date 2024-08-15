@@ -30,6 +30,7 @@ public class SecurityConfig {
     private final LogoutHandler logoutHandler;
     private final LogoutService logoutService;
 
+    // List of public endpoints accessible without authentication
     private static final String[] AUTH_PUBLIC_WHITELIST = {
             "/swagger-ui.html/**",
             "/v3/api-docs/**",
@@ -44,16 +45,12 @@ public class SecurityConfig {
             "/app/**"
     };
 
+    // List of endpoints accessible only by admin users
     private static final String[] ADMIN_ENDPOINTS = {
             "/api/user/delete"
     };
 
-//    private static final String[] TEACHER_ENDPOINTS = {
-//            "/api/challenge/**",
-//            "/api/room/**",
-//            "/api/question/**"
-//    };
-
+    // List of endpoints accessible by both students and teachers
     private static final String[] STUDENT_TEACHER_ENDPOINTS = {
             "/api/challenge/**",
             "/api/room/**",
@@ -61,6 +58,8 @@ public class SecurityConfig {
             "/api/student/**"
     };
 
+    // Bean definition for role hierarchy configuration.
+    // With ADMIN being the highest role and STUDENT being the lowest.
     @Bean
     public RoleHierarchy roleHierarchy() {
         return RoleHierarchyImpl.fromHierarchy(
@@ -68,6 +67,7 @@ public class SecurityConfig {
         );
     }
 
+    // Bean definition for custom web security expression handler.
     @Bean
     public DefaultWebSecurityExpressionHandler customWebSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
@@ -75,6 +75,7 @@ public class SecurityConfig {
         return expressionHandler;
     }
 
+    // Bean definition for security filter chain configuration.
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity

@@ -19,10 +19,10 @@ public class QuestionService {
     private final ChallengeRepository challengeRepository;
     private final QuestionRepository questionRepository;
 
+    // Method to get all questions
     public List<QuestionDTO> getAllQuestions() {
         List<Question> questions = questionRepository.findAll();
         List<QuestionDTO> questionDTOS = new ArrayList<>();
-
         for (Question question : questions) {
             var questionDTO = QuestionDTO.builder()
                     .questionId(question.getQuestionId())
@@ -32,32 +32,25 @@ public class QuestionService {
                     .options(question.getOptions())
                     .correctOption(question.getCorrectOption())
                     .build();
-
             questionDTOS.add(questionDTO);
         }
-
         return questionDTOS;
     }
 
+    // Method to get questions for a specific challenge by its ID
     public List<QuestionDTO> getQuestionsForChallenge(Long challengeId) {
-
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found."));
-
         List<Question> questionEntityList = challenge.getQuestions();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
-
         for (Question question : questionEntityList) {
-
             questionDTOList.add(convertToQuestionDTO(question));
         }
-
         return questionDTOList;
     }
 
+    // Method to create a new question for a specific challenge
     public QuestionDTO createQuestion(QuestionDTO questionDTO, Long challengeId) {
-
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found."));
-
         var question = Question.builder()
                 .questionText(questionDTO.getQuestionText())
                 .answer(questionDTO.getAnswer())
@@ -66,12 +59,11 @@ public class QuestionService {
                 .options(questionDTO.getOptions())
                 .correctOption(questionDTO.getCorrectOption())
                 .build();
-
         return convertToQuestionDTO(questionRepository.save(question));
     }
 
+    // Helper method to convert Question entity to QuestionDTO
     private QuestionDTO convertToQuestionDTO(Question question) {
-
         return QuestionDTO.builder()
                 .questionId(question.getQuestionId())
                 .questionText(question.getQuestionText())

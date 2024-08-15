@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+// BaseUser is the superclass.
+// There are two inheritors: Teacher & Student
 @Data
 @Builder(builderMethodName = "baseUserBuilderEntity")
 @Entity
@@ -66,16 +68,16 @@ public class BaseUser implements UserDetails {
     private LocalDateTime dateModified;
 
     @Column(nullable = false)
-    private boolean isAccountNonExpired;
+    private boolean isAccountNonExpired = true;
 
     @Column(nullable = false)
-    private boolean isAccountNonLocked;
+    private boolean isAccountNonLocked = true;
 
     @Column(nullable = false)
-    private boolean isCredentialsNonExpired;
+    private boolean isCredentialsNonExpired = true;
 
     @Column(nullable = false)
-    private boolean isEnabled;
+    private boolean isEnabled = true;
 
 
     public BaseUser(String username, String email, String password, UserType userType, Role role) {
@@ -84,10 +86,6 @@ public class BaseUser implements UserDetails {
         this.password = password;
         this.userType = userType;
         this.role = role;
-        this.isAccountNonExpired = true;
-        this.isAccountNonLocked = true;
-        this.isCredentialsNonExpired = true;
-        this.isEnabled = true;
     }
 
     @Override

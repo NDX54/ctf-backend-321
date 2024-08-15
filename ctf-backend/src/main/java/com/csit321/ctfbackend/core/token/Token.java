@@ -15,18 +15,18 @@ public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long tokenId;
+    private Long tokenId; // Token ID
 
-    private String token;
+    private String token; // Token value
 
     @Enumerated(EnumType.STRING)
-    private TokenType tokenType;
+    private TokenType tokenType; // Token type (e.g., BEARER)
 
-    private boolean expired;
+    private boolean expired; // Expiration status
 
-    private boolean revoked;
+    private boolean revoked; // Revocation status
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private BaseUser user;
+    private BaseUser user; // Associated user
 }

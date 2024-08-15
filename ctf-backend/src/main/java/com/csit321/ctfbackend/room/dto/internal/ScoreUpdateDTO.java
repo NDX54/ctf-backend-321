@@ -12,7 +12,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ScoreUpdateDTO implements Serializable {
 
+    // Username of the user whose score is updated
     private String username;
+
+    // New score of the user
     private double newScore;
 
 }

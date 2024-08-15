@@ -1,6 +1,5 @@
 package com.csit321.ctfbackend.user.model.enums;
 
-import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Role {

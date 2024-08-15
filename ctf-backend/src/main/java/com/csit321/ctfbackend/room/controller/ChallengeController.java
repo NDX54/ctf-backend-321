@@ -18,11 +18,13 @@ public class ChallengeController {
 
     private final ChallengeService challengeService;
 
+    // Endpoint to get all challenges
     @GetMapping("/all")
     public List<ChallengeDTO> getAllChallenges() {
         return challengeService.getAllChallenges();
     }
 
+    // Endpoint to get a specific challenge by its ID
     @GetMapping("/{challengeId}")
     public ResponseEntity<?> getChallenge(@PathVariable Long challengeId) {
         ChallengeDTO challengeDTO = challengeService.getChallengeById(challengeId);
@@ -30,6 +32,7 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeDTO);
     }
 
+    // Endpoint to create a new challenge
     @PostMapping("/new")
     public ResponseEntity<?> createChallenge(@RequestBody ChallengeDTO challengeDTO, WebRequest request) {
         ChallengeDTO newChallenge = challengeService.createChallenge(challengeDTO);

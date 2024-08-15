@@ -26,12 +26,16 @@ spring:
 server:
   port: 8085
 
+jwt:
+  secret:
+    key: d35c6bc108fd7feaf8e2b04b55abe080cb7d8abd59417aa2760fcd76caeedd2a
+
 logging:
     level:
       org:
         springframework:
-          web: TRACE
-        hibernate: TRACE
+          web: DEBUG
+        hibernate: DEBUG
 
 admin:
   email: t@t.com

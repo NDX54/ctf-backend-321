@@ -16,29 +16,36 @@ import java.util.List;
 @Setter
 public class Challenge {
 
+    // ID of the challenge
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long challengeId;
 
+    // Name of the challenge
     @Column(nullable = false)
     private String name;
 
+    // Description of the challenge
     @Lob
     @Column(nullable = false, columnDefinition = "CLOB")
     private String description;
 
+    // Difficulty level of the challenge
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
+    // List of questions associated with the challenge
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
+    // Method to add a question to the challenge
     public void addQuestion(Question question) {
         this.questions.add(question);
         question.setChallenge(this);
     }
 
+    // Method to remove a question from the challenge
     public void removeQuestion(Question question) {
         this.questions.remove(question);
         question.setChallenge(null);

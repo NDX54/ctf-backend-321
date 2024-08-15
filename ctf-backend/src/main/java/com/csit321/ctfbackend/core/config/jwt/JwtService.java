@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,15 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+// Service for generating and validating JWT tokens.
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "d35c6bc108fd7feaf8e2b04b55abe080cb7d8abd59417aa2760fcd76caeedd2a";
+    // Secret key for signing JWT tokens.
+    @Value("${jwt.secret.key}")
+    private String secretKey;
 
+    // Method to extract the username from a JWT token.
     public String extractUsername(String token) {
         try {
             return extractClaim(token, Claims::getSubject);
@@ -29,11 +34,13 @@ public class JwtService {
         }
     }
 
+    // Method to extract a specific claim from a JWT token.
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    // Method to generate a JWT token for a given user.
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", userDetails.getAuthorities().stream()
@@ -42,6 +49,7 @@ public class JwtService {
         return generateToken(claims, userDetails);
     }
 
+    // Method to generate a JWT token with additional claims.
     public String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
@@ -62,6 +70,7 @@ public class JwtService {
         }
     }
 
+    // Method to validate a JWT token.
     public boolean isTokenValid(String token, UserDetails userDetails) {
 
         try {
@@ -73,14 +82,17 @@ public class JwtService {
 
     }
 
+    // Method to check if a JWT token is expired.
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    // Method to extract the expiration date from a JWT token.
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    // Method to extract all claims from a JWT token.
     private Claims extractAllClaims(String token) {
         try {
             return Jwts
@@ -102,8 +114,9 @@ public class JwtService {
         }
     }
 
+    // Method to get the signing key for JWT tokens.
     private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

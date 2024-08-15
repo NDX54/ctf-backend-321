@@ -21,27 +21,29 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final QuestionRepository questionRepository;
 
+    // Method to get all challenges
     public List<ChallengeDTO> getAllChallenges() {
         List<Challenge> challenges = challengeRepository.findAll();
         List<ChallengeDTO> challengeDTOS = new ArrayList<>();
         for (Challenge challenge : challenges) {
             challengeDTOS.add(convertToChallengeDTO(challenge));
         }
-
         return challengeDTOS;
     }
 
+    // Method to get a challenge by its ID
     public ChallengeDTO getChallengeById(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found"));
-
         return convertToChallengeDTO(challenge);
     }
 
+    // Method to create a new challenge
     public ChallengeDTO createChallenge(ChallengeDTO challengeDTO) {
         Challenge challenge = convertToChallengeEntity(challengeDTO);
         return convertToChallengeDTO(challengeRepository.save(challenge));
     }
 
+    // Helper method to convert ChallengeDTO to Challenge entity
     private Challenge convertToChallengeEntity(ChallengeDTO challengeDTO) {
         Challenge challenge = new Challenge();
         challenge.setName(challengeDTO.getName());
@@ -53,6 +55,7 @@ public class ChallengeService {
         return challenge;
     }
 
+    // Helper method to convert Challenge entity to ChallengeDTO
     private ChallengeDTO convertToChallengeDTO(Challenge challenge) {
         List<Question> questions = challenge.getQuestions();
         List<QuestionDTO> questionDTOS = new ArrayList<>();
@@ -66,8 +69,6 @@ public class ChallengeService {
             questionDTO.setCorrectOption(question.getCorrectOption());
             questionDTOS.add(questionDTO);
         }
-
-
         return ChallengeDTO.builder()
                 .challengeId(challenge.getChallengeId())
                 .name(challenge.getName())
@@ -77,25 +78,7 @@ public class ChallengeService {
                 .build();
     }
 
-//    private List<Question> getQuestionEntityList(RoomDTO roomDTO) {
-//        List<QuestionDTO> questionDTOList = roomDTO.getQuestionDTOList();
-//        List<Question> questions = new ArrayList<>();
-//        Room room = roomRepository.findById(roomDTO.getRoomId()).orElseThrow(() -> new CustomNotFoundException("Room not found."));
-//        System.out.println(room);
-//        if (questionDTOList == null || questionDTOList.isEmpty()) {
-//            return new ArrayList<>();
-//        } else {
-//            for (QuestionDTO questionDTO : questionDTOList) {
-//                Question question = new Question();
-//                question.setQuestionId(questionDTO.getQuestionId());
-//                question.setQuestionText(questionDTO.getQuestionText());
-//                question.setAnswer(questionDTO.getAnswer());
-//                questions.add(question);
-//            }
-//            return questions;
-//        }
-//    }
-
+    // Helper method to get a list of QuestionDTOs for a challenge
     private List<QuestionDTO> getQuestionDTOList(Challenge challenge) {
         List<Question> questions = challenge.getQuestions();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -106,7 +89,6 @@ public class ChallengeService {
             questionDTO.setAnswer(question.getAnswer());
             questionDTOList.add(questionDTO);
         }
-
         return questionDTOList;
     }
 }

@@ -28,24 +28,28 @@ public class ApplicationConfig {
 
     private final BaseUserRepository baseUserRepository;
 
+    // Bean definition for password encoders with different algorithms
     @Bean
     public PasswordEncoder passwordEncoder() {
-        int cpuCost = (int) Math.pow(2, 14);
-        String encodingId = "argon2";
+        int cpuCost = (int) Math.pow(2, 14); // Computational cost for SCrypt
+        String encodingId = "argon2"; // Default encoding ID
         Map<String, PasswordEncoder> encoders = new HashMap<>();
 
         encoders.put("bcrypt", new BCryptPasswordEncoder(11, new SecureRandom()));
         encoders.put("scrypt", new SCryptPasswordEncoder(cpuCost,8,1,32,64));
         encoders.put("argon2", new Argon2PasswordEncoder(16, 32, 1, 4096, 3));
 
+        // DelegatingPasswordEncoder with Argon2 as the default
         return new DelegatingPasswordEncoder(encodingId, encoders);
     }
 
+    // Bean definition for loading user-specific data
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> baseUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
+    // Bean definition for authentication provider
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -54,6 +58,7 @@ public class ApplicationConfig {
         return authProvider;
     }
 
+    // Bean definition for authentication manager
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

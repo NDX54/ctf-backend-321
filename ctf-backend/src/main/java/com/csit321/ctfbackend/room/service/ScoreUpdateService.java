@@ -14,8 +14,8 @@ public class ScoreUpdateService {
     private final RabbitTemplate rabbitTemplate;
     private final SimpMessagingTemplate messagingTemplate;
 
+    // Method to send a score update message to the queue
     public void sendScoreUpdate(ScoreUpdateDTO scoreUpdateDTO) {
         rabbitTemplate.convertAndSend(RabbitMQConfig.SCORE_UPDATE_QUEUE_NAME, scoreUpdateDTO);
     }
-
 }

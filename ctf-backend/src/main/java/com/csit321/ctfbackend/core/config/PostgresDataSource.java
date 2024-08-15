@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostgresDataSource {
 
+    // Bean definition for HikariDataSource with configuration properties
     @Bean
     @ConfigurationProperties("app.datasource")
     public HikariDataSource hikariDataSource() {

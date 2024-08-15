@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
 
+    // Query to find all valid tokens by user ID
     @Query("""
             select t from Token t inner join BaseUser u on t.user.userId = u.userId
             where u.userId = :userId and (t.expired = false or t.revoked = false)
