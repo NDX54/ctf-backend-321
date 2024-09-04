@@ -1,6 +1,6 @@
 package com.csit321.ctfbackend.room.service;
 
-import com.csit321.ctfbackend.core.api.CustomNotFoundException;
+import com.csit321.ctfbackend.core.api.exceptions.CustomNotFoundException;
 import com.csit321.ctfbackend.room.dto.internal.ChallengeDTO;
 import com.csit321.ctfbackend.room.dto.internal.QuestionDTO;
 import com.csit321.ctfbackend.room.enums.Difficulty;

@@ -4,8 +4,14 @@ import com.csit321.ctfbackend.room.model.Challenge;
 import com.csit321.ctfbackend.room.model.Question;
 import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
+import com.csit321.ctfbackend.user.model.Student;
+import com.csit321.ctfbackend.user.model.Teacher;
+import com.csit321.ctfbackend.user.model.enums.Role;
+import com.csit321.ctfbackend.user.model.enums.UserType;
+import com.csit321.ctfbackend.user.repository.BaseUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -17,10 +23,232 @@ import java.util.List;
 public class DataInitializer implements CommandLineRunner {
 
     private final ChallengeRepository challengeRepository;
+    private final BaseUserRepository baseUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
+        createTeachers();
+        createStudents();
         createTestChallenges();
+    }
+
+    private int generateRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    private void createTeachers() {
+        Teacher teacher1 = Teacher.teacherBuilderEntity()
+                .username("teacher1")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher1@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 1")
+                .build();
+
+        Teacher teacher2 = Teacher.teacherBuilderEntity()
+                .username("teacher2")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher2@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 2")
+                .build();
+
+        Teacher teacher3 = Teacher.teacherBuilderEntity()
+                .username("teacher3")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher3@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 3")
+                .build();
+
+        Teacher teacher4 = Teacher.teacherBuilderEntity()
+                .username("teacher4")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher4@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 4")
+                .build();
+
+        Teacher teacher5 = Teacher.teacherBuilderEntity()
+                .username("teacher5")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher5@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 5")
+                .build();
+
+        Teacher teacher6 = Teacher.teacherBuilderEntity()
+                .username("teacher6")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher6@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 6")
+                .build();
+
+        Teacher teacher7 = Teacher.teacherBuilderEntity()
+                .username("teacher7")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher7@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 7")
+                .build();
+
+        Teacher teacher8 = Teacher.teacherBuilderEntity()
+                .username("teacher8")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher8@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 8")
+                .build();
+
+        Teacher teacher9 = Teacher.teacherBuilderEntity()
+                .username("teacher9")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher9@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 9")
+                .build();
+
+        Teacher teacher10 = Teacher.teacherBuilderEntity()
+                .username("teacher10")
+                .password(passwordEncoder.encode("12345678"))
+                .email("teacher10@t.com")
+                .role(Role.TEACHER)
+                .userType(UserType.TEACHER)
+                .school("School 10")
+                .build();
+
+        List<Teacher> teachers = Arrays.asList(
+                teacher1,
+                teacher2,
+                teacher3,
+                teacher4,
+                teacher5,
+                teacher6,
+                teacher7,
+                teacher8,
+                teacher9,
+                teacher10
+        );
+
+        baseUserRepository.saveAll(teachers);
+    }
+
+    private void createStudents() {
+        Student student1 = Student.studentBuilderEntity()
+                .username("student1")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student1@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student2 = Student.studentBuilderEntity()
+                .username("student2")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student2@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student3 = Student.studentBuilderEntity()
+                .username("student3")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student3@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student4 = Student.studentBuilderEntity()
+                .username("student4")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student4@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student5 = Student.studentBuilderEntity()
+                .username("student5")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student5@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student6 = Student.studentBuilderEntity()
+                .username("student6")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student6@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student7 = Student.studentBuilderEntity()
+                .username("student7")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student7@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student8 = Student.studentBuilderEntity()
+                .username("student8")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student8@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student9 = Student.studentBuilderEntity()
+                .username("student9")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student9@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        Student student10 = Student.studentBuilderEntity()
+                .username("student10")
+                .password(passwordEncoder.encode("12345678"))
+                .email("student10@g.com")
+                .role(Role.STUDENT)
+                .userType(UserType.STUDENT)
+                .yearLevel(generateRandomNumber(1, 12))
+                .build();
+
+        List<Student> students = Arrays.asList(
+                student1,
+                student2,
+                student3,
+                student4,
+                student5,
+                student6,
+                student7,
+                student8,
+                student9,
+                student10
+        );
+
+        baseUserRepository.saveAll(students);
     }
 
     private void createTestChallenges() {
@@ -166,8 +394,13 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         challenge1.setQuestions(questions1);
-        challengeRepository.save(challenge1);
-        challengeRepository.save(challenge2);
-        challengeRepository.save(challenge3);
+
+        List<Challenge> challenges = Arrays.asList(
+                challenge1,
+                challenge2,
+                challenge3
+        );
+
+        challengeRepository.saveAll(challenges);
     }
 }

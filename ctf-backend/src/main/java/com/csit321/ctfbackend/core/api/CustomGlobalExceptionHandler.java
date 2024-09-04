@@ -1,5 +1,6 @@
 package com.csit321.ctfbackend.core.api;
 
+import com.csit321.ctfbackend.core.api.exceptions.*;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -105,6 +106,16 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<?> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException exc, WebRequest request) {
 
         return APIResponse.build(exc.getMessage(), "Handle method error", HttpStatus.METHOD_NOT_ALLOWED, request);
+    }
+
+    @ExceptionHandler(AlreadyMemberException.class)
+    public ResponseEntity<?> handleAlreadyMemberException(AlreadyMemberException exc, WebRequest request) {
+        return APIResponse.build(exc.getMessage(), "Already a member", HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(MemberNotInTeamException.class)
+    public ResponseEntity<?> handleMemberNotInTeamException(MemberNotInTeamException exc, WebRequest request) {
+        return APIResponse.build(exc.getMessage(), "Member not in team", HttpStatus.BAD_REQUEST, request);
     }
 
 

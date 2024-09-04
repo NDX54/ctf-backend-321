@@ -1,6 +1,6 @@
 package com.csit321.ctfbackend.core.config.jwt;
 
-import com.csit321.ctfbackend.core.api.JwtException;
+import com.csit321.ctfbackend.core.api.exceptions.JwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

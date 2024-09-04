@@ -70,17 +70,18 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 .isEnabled(true)
                 .build();
 
-        var jwtToken = jwtService.generateToken(adminUser);
-        var savedUser = baseUserRepository.save(adminUser);
-
-        var token = Token.builder()
-                .user(savedUser)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-
-        tokenRepository.save(token);
+        baseUserRepository.save(adminUser);
+//        var jwtToken = jwtService.generateToken(adminUser);
+//        var savedUser = baseUserRepository.save(adminUser);
+//
+//        var token = Token.builder()
+//                .user(savedUser)
+//                .token(jwtToken)
+//                .tokenType(TokenType.BEARER)
+//                .expired(false)
+//                .revoked(false)
+//                .build();
+//
+//        tokenRepository.save(token);
     }
 }

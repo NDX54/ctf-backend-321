@@ -1,6 +1,6 @@
 package com.csit321.ctfbackend.user.service;
 
-import com.csit321.ctfbackend.core.api.CustomNotFoundException;
+import com.csit321.ctfbackend.core.api.exceptions.CustomNotFoundException;
 import com.csit321.ctfbackend.core.auth.AuthenticationRequest;
 import com.csit321.ctfbackend.core.auth.AuthenticationResponse;
 import com.csit321.ctfbackend.core.config.jwt.JwtService;

@@ -1,17 +1,17 @@
 package com.csit321.ctfbackend.user.service;
 
-import com.csit321.ctfbackend.core.api.CustomNotFoundException;
+import com.csit321.ctfbackend.core.api.exceptions.CustomNotFoundException;
 import com.csit321.ctfbackend.room.dto.internal.ScoreUpdateDTO;
 import com.csit321.ctfbackend.room.service.ScoreUpdateService;
-import com.csit321.ctfbackend.user.dto.internal.StudentDTO;
+import com.csit321.ctfbackend.user.dto.internal.StudentUpdateDTO;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +19,7 @@ public class StudentService {
 
     private final BaseUserRepository baseUserRepository;
     private final ScoreUpdateService scoreUpdateService;
+    private final PasswordEncoder passwordEncoder;
 
     // This saves the student's score.
     public void saveStudentScore(String username, double score) {
@@ -41,6 +42,29 @@ public class StudentService {
         } else {
             throw new RuntimeException("User is not a student.");
         }
+    }
+
+    public StudentUpdateDTO updateStudentInfo(String username, StudentUpdateDTO studentUpdateDTO) {
+        Student targetStudent = (Student) baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("Student not found."));
+
+        targetStudent.setUsername(studentUpdateDTO.getUsername());
+        targetStudent.setEmail(studentUpdateDTO.getEmail());
+        targetStudent.setPassword(passwordEncoder.encode(studentUpdateDTO.getPassword()));
+        targetStudent.setYearLevel(studentUpdateDTO.getYearLevel());
+
+        baseUserRepository.save(targetStudent);
+
+        return StudentUpdateDTO.studentUpdateDTOBuilder()
+                .userId(targetStudent.getUserId())
+                .username(targetStudent.getUsername())
+                .email(targetStudent.getEmail())
+                .password(targetStudent.getPassword())
+                .yearLevel(targetStudent.getYearLevel())
+                .build();
+    }
+
+    public Student getStudentByUsername(String username) {
+        return (Student) baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("Student not found."));
     }
 
     // Gets a user either by their email or username.

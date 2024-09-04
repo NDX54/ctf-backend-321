@@ -1,0 +1,90 @@
+package com.csit321.ctfbackend.user.service;
+
+import com.csit321.ctfbackend.core.api.exceptions.AlreadyMemberException;
+import com.csit321.ctfbackend.core.api.exceptions.CustomNotFoundException;
+import com.csit321.ctfbackend.core.api.exceptions.MemberNotInTeamException;
+import com.csit321.ctfbackend.user.dto.external.MemberDTO;
+import com.csit321.ctfbackend.user.dto.external.PublicStudentDTO;
+import com.csit321.ctfbackend.user.dto.external.TeamDTO;
+import com.csit321.ctfbackend.user.model.Student;
+import com.csit321.ctfbackend.user.model.Team;
+import com.csit321.ctfbackend.user.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TeamService {
+
+    private final TeamRepository teamRepository;
+    private final StudentService studentService;
+
+    public String createTeam(String teamName) {
+        var newTeam = Team.builder()
+                .teamName(teamName)
+                .build();
+        teamRepository.save(newTeam);
+
+        return newTeam.getTeamPassword();
+    }
+
+    public void addMemberToTeam(String teamPassword, String studentUsername) {
+        Team team = teamRepository.findByTeamPassword(teamPassword).orElseThrow(() -> new CustomNotFoundException("Team not found."));
+        Student student = studentService.getStudentByUsername(studentUsername);
+
+        // If the team already has the student as a member, throw an error.
+        if (team.hasMember(student)) {
+            throw new AlreadyMemberException();
+        }
+
+        team.addMember(student);
+        teamRepository.save(team);
+    }
+
+    public void removeMemberFromTeam(String teamName, String studentUsername) {
+        Team team = teamRepository.findByTeamName(teamName).orElseThrow(() -> new CustomNotFoundException("Team not found."));
+        Student student = studentService.getStudentByUsername(studentUsername);
+
+        // If the team does not have the student as a member, throw an error.
+        if (!team.hasMember(student)) {
+            throw new MemberNotInTeamException();
+        }
+
+        team.removeMember(student);
+        teamRepository.save(team);
+    }
+
+    public List<TeamDTO> getAllTeams() {
+        List<Team> teams = teamRepository.findAll();
+        List<TeamDTO> teamDTOS = new ArrayList<>();
+        for (Team team : teams) {
+            teamDTOS.add(convertToTeamDTO(team));
+        }
+        return teamDTOS;
+    }
+
+    private TeamDTO convertToTeamDTO(Team team) {
+        List<MemberDTO> memberDTOS = new ArrayList<>();
+        for (Student student : team.getMembers()) {
+            memberDTOS.add(MemberDTO.builder()
+                    .userId(student.getUserId())
+                    .username(student.getUsername())
+                    .email(student.getEmail())
+                    .teamId(team.getTeamId())
+                    .build());
+        }
+
+        return TeamDTO.builder()
+                .teamId(team.getTeamId())
+                .teamPassword(team.getTeamPassword())
+                .score(team.getScore())
+                .rank(team.getRank())
+                .numMembers(team.getMembers().size())
+                .members(memberDTOS)
+                .build();
+    }
+
+}
