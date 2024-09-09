@@ -278,6 +278,15 @@ public class BaseUserService {
                 .build();
     }
 
+    public String generateNewToken(String username) {
+        var user = baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("User not found"));
+        var jwtToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+
+        return jwtToken;
+    }
+
     public List<BaseUserDTO> getAllUsers() {
 
         List<BaseUser> baseUsers = baseUserRepository.findAll();
