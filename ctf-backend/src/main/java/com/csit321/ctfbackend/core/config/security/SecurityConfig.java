@@ -43,7 +43,8 @@ public class SecurityConfig {
             "/ws/**",
             "/topic/**",
             "/app/**",
-            "/api/team/**"
+            "/api/team/**",
+            "/api/competition/**"
     };
 
     // List of endpoints accessible only by admin users

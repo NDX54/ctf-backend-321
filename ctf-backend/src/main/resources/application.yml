@@ -34,8 +34,8 @@ logging:
     level:
       org:
         springframework:
-          web: DEBUG
-        hibernate: DEBUG
+          web: INFO
+        hibernate: INFO
 
 admin:
   email: t@t.com

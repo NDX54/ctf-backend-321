@@ -1,6 +1,8 @@
 package com.csit321.ctfbackend.user.model;
 
 import com.csit321.ctfbackend.core.utilities.RandomString;
+import com.csit321.ctfbackend.room.model.Competition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +32,11 @@ public class Team {
     private int rank = 0;
 
     private int numMembers = 0;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "competition_id")
+    private Competition competition;
 
     @OneToMany(mappedBy = "team")
     private List<Student> members = new ArrayList<>();

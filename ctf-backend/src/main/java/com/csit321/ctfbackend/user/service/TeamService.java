@@ -31,6 +31,15 @@ public class TeamService {
         return newTeam.getTeamPassword();
     }
 
+    public List<TeamDTO> getTeamsByCompetitionId(Long competitionId) {
+        List<Team> teams = teamRepository.findByCompetition_CompetitionId(competitionId);
+        List<TeamDTO> teamDTOS = new ArrayList<>();
+        for (Team team : teams) {
+            teamDTOS.add(convertToTeamDTO(team));
+        }
+        return teamDTOS;
+    }
+
     public void addMemberToTeam(String teamPassword, String studentUsername) {
         Team team = teamRepository.findByTeamPassword(teamPassword).orElseThrow(() -> new CustomNotFoundException("Team not found."));
         Student student = studentService.getStudentByUsername(studentUsername);
@@ -79,11 +88,13 @@ public class TeamService {
 
         return TeamDTO.builder()
                 .teamId(team.getTeamId())
+                .teamName(team.getTeamName())
                 .teamPassword(team.getTeamPassword())
                 .score(team.getScore())
                 .rank(team.getRank())
                 .numMembers(team.getMembers().size())
                 .members(memberDTOS)
+                .competitionId(team.getCompetition().getCompetitionId())
                 .build();
     }
 

@@ -1,14 +1,18 @@
 package com.csit321.ctfbackend.core.testdata;
 
 import com.csit321.ctfbackend.room.model.Challenge;
+import com.csit321.ctfbackend.room.model.Competition;
 import com.csit321.ctfbackend.room.model.Question;
 import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
+import com.csit321.ctfbackend.room.repository.CompetitionRepository;
 import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.model.Teacher;
+import com.csit321.ctfbackend.user.model.Team;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
+import com.csit321.ctfbackend.user.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +28,8 @@ public class DataInitializer implements CommandLineRunner {
 
     private final ChallengeRepository challengeRepository;
     private final BaseUserRepository baseUserRepository;
+    private final CompetitionRepository competitionRepository;
+    private final TeamRepository teamRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -31,6 +37,7 @@ public class DataInitializer implements CommandLineRunner {
         createTeachers();
         createStudents();
         createTestChallenges();
+        createTestCompetitions();
     }
 
     private int generateRandomNumber(int min, int max) {
@@ -402,5 +409,61 @@ public class DataInitializer implements CommandLineRunner {
         );
 
         challengeRepository.saveAll(challenges);
+    }
+
+    private void createTestCompetitions() {
+
+        Team team1 = Team.builder()
+                .teamName("Team 1")
+                .build();
+
+        Team team2 = Team.builder()
+                .teamName("Team 2")
+                .build();
+
+        Team team3 = Team.builder()
+                .teamName("Team 3")
+                .build();
+
+        Team team4 = Team.builder()
+                .teamName("Team 4")
+                .build();
+
+        List<Team> teams = Arrays.asList(
+                team1,
+                team2,
+                team3,
+                team4
+        );
+
+        teamRepository.saveAll(teams);
+
+        Competition competition1 = Competition.builder()
+                .competitionCode("COMP1")
+                .maxTeams(10)
+                .maxTeamSize(5)
+                .teamsList(Arrays.asList(team1, team2))
+                .build();
+
+        Competition competition2 = Competition.builder()
+                .competitionCode("COMP2")
+                .maxTeams(5)
+                .maxTeamSize(4)
+                .teamsList(Arrays.asList(team3, team4))
+                .build();
+
+        List<Competition> competitions = Arrays.asList(
+                competition1,
+                competition2
+        );
+
+        competitionRepository.saveAll(competitions);
+
+        team1.setCompetition(competition1);
+        team2.setCompetition(competition1);
+        team3.setCompetition(competition2);
+        team4.setCompetition(competition2);
+
+        teamRepository.saveAll(teams);
     }
 }
