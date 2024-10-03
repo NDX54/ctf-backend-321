@@ -49,6 +49,7 @@ public class ChallengeService {
         challenge.setName(challengeDTO.getName());
         challenge.setDescription(challengeDTO.getDescription());
         challenge.setDifficulty(Difficulty.valueOfLabel(challengeDTO.getDifficulty()));
+        challenge.setPoints(challengeDTO.getPoints());
         if (challengeDTO.getQuestions() == null || challengeDTO.getQuestions().isEmpty()) {
             challenge.setQuestions(new ArrayList<>());
         }
@@ -74,6 +75,7 @@ public class ChallengeService {
                 .name(challenge.getName())
                 .description(challenge.getDescription())
                 .difficulty(challenge.getDifficulty().getValue())
+                .points(challenge.getPoints())
                 .questions(questionDTOS)
                 .build();
     }

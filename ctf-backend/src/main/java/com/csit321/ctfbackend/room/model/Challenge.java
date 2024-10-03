@@ -35,6 +35,10 @@ public class Challenge {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
+    // Point worth of the challenge
+    @Column(nullable = false)
+    private Integer points;
+
     // List of questions associated with the challenge
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();

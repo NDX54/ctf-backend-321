@@ -27,6 +27,9 @@ public class ChallengeDTO {
     @Schema(example = "Beginner")
     private String difficulty;
 
+    // Description of the challenge
+    private Integer points;
+
     // List of questions in the challenge
     @Schema(description = "The list of questions in a challenge", hidden = true)
     private List<QuestionDTO> questions;

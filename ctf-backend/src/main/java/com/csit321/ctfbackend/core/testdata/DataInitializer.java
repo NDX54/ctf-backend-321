@@ -263,6 +263,7 @@ public class DataInitializer implements CommandLineRunner {
                 .name("Cybersecurity Challenge")
                 .description("Test your knowledge on various cybersecurity concepts.")
                 .difficulty(Difficulty.INTERMEDIATE)
+                .points(100)
                 .build();
 
         List<Question> questions1 = Arrays.asList(
@@ -392,12 +393,14 @@ public class DataInitializer implements CommandLineRunner {
                 .name("Hashing")
                 .description("Hashing challenge.")
                 .difficulty(Difficulty.BEGINNER)
+                .points(100)
                 .build();
 
         Challenge challenge3 = Challenge.builder()
                 .name("OSINT")
                 .description("Test your knowledge on OSINT.")
                 .difficulty(Difficulty.ADVANCED)
+                .points(100)
                 .build();
 
         challenge1.setQuestions(questions1);
