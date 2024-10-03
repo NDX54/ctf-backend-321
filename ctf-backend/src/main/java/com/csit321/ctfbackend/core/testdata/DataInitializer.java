@@ -442,6 +442,7 @@ public class DataInitializer implements CommandLineRunner {
         teamRepository.saveAll(teams);
 
         Competition competition1 = Competition.builder()
+                .competitionName("Competition 1")
                 .competitionCode("COMP1")
                 .maxTeams(10)
                 .maxTeamSize(5)
@@ -449,6 +450,7 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         Competition competition2 = Competition.builder()
+                .competitionName("Competition 2")
                 .competitionCode("COMP2")
                 .maxTeams(5)
                 .maxTeamSize(4)

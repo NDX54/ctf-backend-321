@@ -40,6 +40,16 @@ public class TeamService {
         return teamDTOS;
     }
 
+    public Team getTeamByTeamName(String teamName) {
+        return teamRepository.findByTeamName(teamName).orElseThrow(() -> new CustomNotFoundException("Team not found."));
+    }
+
+    public List<Student> getMembersByTeamName(String teamName) {
+        Team team = teamRepository.findByTeamName(teamName).orElseThrow(() -> new CustomNotFoundException("Team not found."));
+
+        return new ArrayList<>(team.getMembers());
+    }
+
     public void addMemberToTeam(String teamPassword, String studentUsername) {
         Team team = teamRepository.findByTeamPassword(teamPassword).orElseThrow(() -> new CustomNotFoundException("Team not found."));
         Student student = studentService.getStudentByUsername(studentUsername);
@@ -74,6 +84,8 @@ public class TeamService {
         }
         return teamDTOS;
     }
+
+
 
     private TeamDTO convertToTeamDTO(Team team) {
         List<MemberDTO> memberDTOS = new ArrayList<>();

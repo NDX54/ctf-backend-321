@@ -20,6 +20,8 @@ public class Competition {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long competitionId;
 
+    private String competitionName;
+
     private String competitionCode;
 
     private int maxTeams = 2;
@@ -32,6 +34,18 @@ public class Competition {
     @PrePersist
     private void onCreate() {
         this.competitionCode = new RandomString(6).nextString();
+    }
+
+    public void addTeam(Team team) {
+        this.teamsList.add(team);
+    }
+
+    public void removeTeam(Team team) {
+        this.teamsList.remove(team);
+    }
+
+    public boolean hasTeam(Team team) {
+        return this.teamsList.contains(team);
     }
 
 }

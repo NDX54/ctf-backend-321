@@ -16,6 +16,8 @@ public class CompetitionDTO {
 
     private Long competitionId;
 
+    private String competitionName;
+
     private String competitionCode;
 
     private int maxTeams;
