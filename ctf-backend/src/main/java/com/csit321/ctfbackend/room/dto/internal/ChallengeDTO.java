@@ -28,7 +28,7 @@ public class ChallengeDTO {
     private String difficulty;
 
     // Description of the challenge
-    private Integer points;
+    private double points;
 
     // List of questions in the challenge
     @Schema(description = "The list of questions in a challenge", hidden = true)

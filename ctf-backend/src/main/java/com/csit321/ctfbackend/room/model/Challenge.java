@@ -37,7 +37,7 @@ public class Challenge {
 
     // Point worth of the challenge
     @Column(nullable = false)
-    private Integer points;
+    private double points;
 
     // List of questions associated with the challenge
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -4,6 +4,8 @@ import com.csit321.ctfbackend.core.api.exceptions.CustomNotFoundException;
 import com.csit321.ctfbackend.room.dto.internal.QuestionDTO;
 import com.csit321.ctfbackend.room.model.Challenge;
 import com.csit321.ctfbackend.room.model.Question;
+import com.csit321.ctfbackend.room.model.QuestionData;
+import com.csit321.ctfbackend.room.model.QuestionItem;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -72,5 +74,28 @@ public class QuestionService {
                 .options(question.getOptions())
                 .correctOption(question.getCorrectOption())
                 .build();
+    }
+
+    public void importQuestions(QuestionData questionData, Challenge challenge) {
+        double totalPoints = 0;
+
+        for (QuestionItem item : questionData.getQuestions()) {
+            Question question = Question.builder()
+                    .questionText(item.getQuestion())
+                    .options(item.getOptions())
+                    .correctOption(item.getCorrectOption())
+                    .answer(item.getOptions().get(item.getCorrectOption()))
+                    .points(item.getPoints())
+                    .challenge(challenge)
+                    .build();
+            questionRepository.save(question);
+
+            challenge.addQuestion(question);
+
+            totalPoints += question.getPoints();
+
+        }
+
+        challenge.setPoints(totalPoints);
     }
 }

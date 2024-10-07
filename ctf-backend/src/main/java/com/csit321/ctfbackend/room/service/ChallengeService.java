@@ -6,6 +6,8 @@ import com.csit321.ctfbackend.room.dto.internal.QuestionDTO;
 import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.csit321.ctfbackend.room.model.Challenge;
 import com.csit321.ctfbackend.room.model.Question;
+import com.csit321.ctfbackend.room.model.QuestionData;
+import com.csit321.ctfbackend.room.model.QuestionItem;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +45,17 @@ public class ChallengeService {
         return convertToChallengeDTO(challengeRepository.save(challenge));
     }
 
+    public Challenge createChallengeEntity(ChallengeDTO challengeDTO) {
+        Challenge challenge = convertToChallengeEntity(challengeDTO);
+        return challengeRepository.save(challenge);
+    }
+
+    public void updateChallenge(Challenge challenge) {
+        challengeRepository.save(challenge);
+    }
+
     // Helper method to convert ChallengeDTO to Challenge entity
-    private Challenge convertToChallengeEntity(ChallengeDTO challengeDTO) {
+    public Challenge convertToChallengeEntity(ChallengeDTO challengeDTO) {
         Challenge challenge = new Challenge();
         challenge.setName(challengeDTO.getName());
         challenge.setDescription(challengeDTO.getDescription());
@@ -57,7 +68,7 @@ public class ChallengeService {
     }
 
     // Helper method to convert Challenge entity to ChallengeDTO
-    private ChallengeDTO convertToChallengeDTO(Challenge challenge) {
+    public ChallengeDTO convertToChallengeDTO(Challenge challenge) {
         List<Question> questions = challenge.getQuestions();
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {
@@ -93,4 +104,5 @@ public class ChallengeService {
         }
         return questionDTOList;
     }
+
 }
