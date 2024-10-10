@@ -44,7 +44,12 @@ public class SecurityConfig {
             "/topic/**",
             "/app/**",
             "/api/team/**",
-            "/api/competition/**"
+            "/api/competition/**",
+            // For debugging only. Remove in production.
+            "/api/challenge/**",
+            "/api/room/**",
+            "/api/question/**",
+            "/api/student/**"
     };
 
     // List of endpoints accessible only by admin users

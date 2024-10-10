@@ -33,6 +33,9 @@ public class QuestionService {
                     .points(question.getPoints())
                     .options(question.getOptions())
                     .correctOption(question.getCorrectOption())
+                    .description(question.getDescription())
+                    .hint(question.getHint())
+                    .flag(question.getFlag())
                     .build();
             questionDTOS.add(questionDTO);
         }
@@ -50,6 +53,15 @@ public class QuestionService {
         return questionDTOList;
     }
 
+    public List<QuestionDTO> getQuestionsForRoom(Long roomId) {
+        List<Question> questionEntityList = questionRepository.findByRoom_RoomId(roomId);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        for (Question question : questionEntityList) {
+            questionDTOList.add(convertToQuestionDTO(question));
+        }
+        return questionDTOList;
+    }
+
     // Method to create a new question for a specific challenge
     public QuestionDTO createQuestion(QuestionDTO questionDTO, Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomNotFoundException("Challenge not found."));
@@ -60,6 +72,9 @@ public class QuestionService {
                 .points(questionDTO.getPoints())
                 .options(questionDTO.getOptions())
                 .correctOption(questionDTO.getCorrectOption())
+                .description(questionDTO.getDescription())
+                .hint(questionDTO.getHint())
+                .flag(questionDTO.getFlag())
                 .build();
         return convertToQuestionDTO(questionRepository.save(question));
     }
@@ -73,6 +88,9 @@ public class QuestionService {
                 .points(question.getPoints())
                 .options(question.getOptions())
                 .correctOption(question.getCorrectOption())
+                .description(question.getDescription())
+                .hint(question.getHint())
+                .flag(question.getFlag())
                 .build();
     }
 

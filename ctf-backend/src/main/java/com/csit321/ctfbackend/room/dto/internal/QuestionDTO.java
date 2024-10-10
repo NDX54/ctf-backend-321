@@ -36,4 +36,10 @@ public class QuestionDTO {
 
     // List of possible answers
     private List<String> options = new ArrayList<>();
+
+    private String description;
+
+    private String hint;
+
+    private String flag;
 }

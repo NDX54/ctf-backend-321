@@ -39,10 +39,23 @@ public class Question {
     // Index of the correct option in the list of options
     private int correctOption;
 
+    @Lob
+    private String description; // Previously q1Description or q2Description
+
+    private String hint;        // Previously q1Hint or q2Hint
+
+    private String flag;        // Previously q1Flag or q2Flag
+
     // Challenge to which the question belongs
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
+
 
 }

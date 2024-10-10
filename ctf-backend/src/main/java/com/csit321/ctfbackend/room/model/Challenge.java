@@ -43,6 +43,11 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id", referencedColumnName = "roomId")
+    private Room room;
+
     // Method to add a question to the challenge
     public void addQuestion(Question question) {
         this.questions.add(question);

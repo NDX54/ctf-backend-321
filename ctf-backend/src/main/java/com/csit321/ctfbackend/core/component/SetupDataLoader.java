@@ -1,6 +1,7 @@
 package com.csit321.ctfbackend.core.component;
 
 import com.csit321.ctfbackend.core.config.jwt.JwtService;
+import com.csit321.ctfbackend.core.testdata.DataInitializer;
 import com.csit321.ctfbackend.core.token.Token;
 import com.csit321.ctfbackend.core.token.TokenRepository;
 import com.csit321.ctfbackend.core.token.TokenType;
@@ -17,6 +18,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
 @Component
 @RequiredArgsConstructor
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -25,6 +28,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private final BaseUserRepository baseUserRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private static final Logger logger = Logger.getLogger(SetupDataLoader.class.getName());
 
     @Value("${admin.email}")
     private String adminEmail;
