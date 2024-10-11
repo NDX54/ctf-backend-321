@@ -774,18 +774,22 @@ public class DataInitializer implements CommandLineRunner {
 
         Team team1 = Team.builder()
                 .teamName("Team 1")
+                .score(200.45)
                 .build();
 
         Team team2 = Team.builder()
                 .teamName("Team 2")
+                .score(90.25)
                 .build();
 
         Team team3 = Team.builder()
                 .teamName("Team 3")
+                .score(30.24)
                 .build();
 
         Team team4 = Team.builder()
                 .teamName("Team 4")
+                .score(120.70)
                 .build();
 
         List<Team> teams = Arrays.asList(
@@ -818,12 +822,13 @@ public class DataInitializer implements CommandLineRunner {
                 competition2
         );
 
-        competitionRepository.saveAll(competitions);
+//        competitionRepository.saveAll(competitions);
+        competitionRepository.save(competition1);
 
         team1.setCompetition(competition1);
         team2.setCompetition(competition1);
-        team3.setCompetition(competition2);
-        team4.setCompetition(competition2);
+        team3.setCompetition(competition1);
+        team4.setCompetition(competition1);
 
         teamRepository.saveAll(teams);
     }

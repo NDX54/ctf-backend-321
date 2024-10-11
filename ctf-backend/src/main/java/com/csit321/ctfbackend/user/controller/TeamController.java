@@ -19,6 +19,11 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
+//    @GetMapping("/{competitionId}/rankedTeams")
+//    public List<TeamDTO> getRankedTeams(@PathVariable Long competitionId) {
+//        return teamService.getRankedTeams(competitionId);
+//    }
+
     @PostMapping("/create")
     public String createTeam(@RequestParam String teamName) {
         return teamService.createTeam(teamName);

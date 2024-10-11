@@ -65,15 +65,15 @@ public class UserController {
     }
 
     // Endpoint for staff login with role check
-    @PostMapping("/user/staff-login")
-    public ResponseEntity<?> loginStaff(@RequestBody @Valid AuthenticationRequest authRequest, WebRequest request) {
-        PublicBaseUserDTO user = baseUserService.authenticateUser(authRequest);
-        if (user.getRole().equals(Role.STUDENT.getValue())) {
-            return APIResponse.build("Not so fast!", "Students are not allowed to login here", HttpStatus.FORBIDDEN, request);
-        } else {
-            return APIResponse.build(user, "Authenticated staff user", HttpStatus.OK, request);
-        }
-    }
+//    @PostMapping("/user/staff-login")
+//    public ResponseEntity<?> loginStaff(@RequestBody @Valid AuthenticationRequest authRequest, WebRequest request) {
+//        PublicBaseUserDTO user = baseUserService.authenticateUser(authRequest);
+//        if (user.getRole().equals(Role.STUDENT.getValue())) {
+//            return APIResponse.build("Not so fast!", "Students are not allowed to login here", HttpStatus.FORBIDDEN, request);
+//        } else {
+//            return APIResponse.build(user, "Authenticated staff user", HttpStatus.OK, request);
+//        }
+//    }
 
     // Endpoint to update user details
     @PutMapping("/user")

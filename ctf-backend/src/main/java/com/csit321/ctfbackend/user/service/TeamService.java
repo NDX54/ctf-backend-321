@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -36,6 +37,21 @@ public class TeamService {
         List<TeamDTO> teamDTOS = new ArrayList<>();
         for (Team team : teams) {
             teamDTOS.add(convertToTeamDTO(team));
+        }
+        return teamDTOS;
+    }
+
+    public List<TeamDTO> getRankedTeams(Long competitionId) {
+        List<Team> teams = teamRepository.findByCompetition_CompetitionId(competitionId);
+        List<TeamDTO> teamDTOS = new ArrayList<>();
+
+        teams.sort(Comparator.comparingDouble(Team::getScore).reversed());
+
+        int rank = 1;
+        for (Team team : teams) {
+            TeamDTO teamDTO = convertToTeamDTO(team);
+            teamDTO.setRank(rank++);
+            teamDTOS.add(teamDTO);
         }
         return teamDTOS;
     }

@@ -10,6 +10,7 @@ import com.csit321.ctfbackend.room.model.QuestionData;
 import com.csit321.ctfbackend.room.model.QuestionItem;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.QuestionRepository;
+import com.csit321.ctfbackend.user.dto.external.TeamDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -79,6 +80,9 @@ public class ChallengeService {
             questionDTO.setPoints(question.getPoints());
             questionDTO.setOptions(question.getOptions());
             questionDTO.setCorrectOption(question.getCorrectOption());
+            questionDTO.setDescription(question.getDescription());
+            questionDTO.setHint(question.getHint());
+            questionDTO.setFlag(question.getFlag());
             questionDTOS.add(questionDTO);
         }
         return ChallengeDTO.builder()
@@ -100,6 +104,12 @@ public class ChallengeService {
             questionDTO.setQuestionId(question.getQuestionId());
             questionDTO.setQuestionText(question.getQuestionText());
             questionDTO.setAnswer(question.getAnswer());
+            questionDTO.setPoints(question.getPoints());
+            questionDTO.setOptions(question.getOptions());
+            questionDTO.setCorrectOption(question.getCorrectOption());
+            questionDTO.setDescription(question.getDescription());
+            questionDTO.setHint(question.getHint());
+            questionDTO.setFlag(question.getFlag());
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;

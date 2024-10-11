@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface CompetitionRepository extends JpaRepository<Competition, Long> {
 
     Optional<Competition> findCompetitionByCompetitionCode(String competitionCode);
+//    List<Team> s
 }
