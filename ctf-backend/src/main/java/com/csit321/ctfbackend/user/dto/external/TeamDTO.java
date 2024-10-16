@@ -24,6 +24,8 @@ public class TeamDTO {
 
     private int numMembers;
 
+    private int maxMembers;
+
     private Long competitionId;
 
     private List<MemberDTO> members;

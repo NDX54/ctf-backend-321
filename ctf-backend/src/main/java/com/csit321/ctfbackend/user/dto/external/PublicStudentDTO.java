@@ -25,12 +25,11 @@ public class PublicStudentDTO extends PublicBaseUserDTO {
                             @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
                                     flags = Pattern.Flag.CASE_INSENSITIVE)
                             String email,
-                            String userType,
                             Integer yearLevel,
                             String role,
                             String token,
                             double score) {
-        super(userId, username, email, userType, role, token);
+        super(userId, username, email, role, token);
         this.yearLevel = yearLevel;
         this.score = score;
     }

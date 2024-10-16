@@ -22,6 +22,8 @@ public class Room {
 
     private String name;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
     @Lob

@@ -32,8 +32,6 @@ public class PublicBaseUserDTO {
             flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
 
-    private String userType;
-
     private String role;
 
     private String token;

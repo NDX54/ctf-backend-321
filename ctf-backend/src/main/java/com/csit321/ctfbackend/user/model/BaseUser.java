@@ -1,7 +1,6 @@
 package com.csit321.ctfbackend.user.model;
 
 import com.csit321.ctfbackend.core.token.Token;
-import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -49,9 +48,6 @@ public class BaseUser implements UserDetails {
     @Size(min = 8, message = "Passwords must have at least 8 characters")
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -80,11 +76,10 @@ public class BaseUser implements UserDetails {
     private boolean isEnabled = true;
 
 
-    public BaseUser(String username, String email, String password, UserType userType, Role role) {
+    public BaseUser(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.userType = userType;
         this.role = role;
     }
 

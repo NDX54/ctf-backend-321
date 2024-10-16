@@ -27,10 +27,9 @@ public class TeacherDTO extends BaseUserDTO {
                       @NotBlank(message = "Password must not be blank")
                       @Size(min = 8, message = "Passwords must have at least 8 characters")
                       String password,
-                      String userType,
                       String role,
                       String school) {
-        super(userId, username, email, password, userType, role);
+        super(userId, username, email, password, role);
         this.school = school;
     }
 }

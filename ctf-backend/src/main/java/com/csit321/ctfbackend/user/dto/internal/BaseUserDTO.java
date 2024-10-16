@@ -41,9 +41,6 @@ public class BaseUserDTO {
         private String password;
 
         @Schema(hidden = true)
-        private String userType;
-
-        @Schema(hidden = true)
         private String role;
 
 }

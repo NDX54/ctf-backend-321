@@ -28,8 +28,8 @@ public class Student extends BaseUser {
     private Team team = null;
 
     @Builder(builderMethodName = "studentBuilderEntity")
-    public Student(String username, String email, String password, UserType userType, Role role, Integer yearLevel, double score) {
-        super(username, email, password, userType, role);
+    public Student(String username, String email, String password, Role role, Integer yearLevel, double score) {
+        super(username, email, password, role);
         this.yearLevel = yearLevel;
         this.score = score;
     }

@@ -33,6 +33,8 @@ public class Team {
 
     private int numMembers = 0;
 
+    private int maxMembers = 0;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "competition_id")
@@ -49,7 +51,7 @@ public class Team {
     @PostPersist
     private void onPersist() {
         System.out.println("Team " + this.teamId + " created with password: " + this.teamPassword);
-        setTeamName("Team " + this.teamId);
+//        setTeamName("Team " + this.teamId);
     }
 
     public void addMember(Student student) {
@@ -68,7 +70,7 @@ public class Team {
         return members.contains(student);
     }
 
-    public boolean isFull(Long maxMembers) {
+    public boolean isFull(int maxMembers) {
         return numMembers >= maxMembers;
     }
 

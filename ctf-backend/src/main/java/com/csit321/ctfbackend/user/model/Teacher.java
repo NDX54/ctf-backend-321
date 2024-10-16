@@ -17,8 +17,8 @@ public class Teacher extends BaseUser {
     private String school;
 
     @Builder(builderMethodName = "teacherBuilderEntity")
-    public Teacher(String username, String email, String password, UserType userType, Role role, String school) {
-        super(username, email, password, userType, role);
+    public Teacher(String username, String email, String password, Role role, String school) {
+        super(username, email, password, role);
         this.school = school;
     }
 

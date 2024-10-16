@@ -19,10 +19,10 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
-//    @GetMapping("/{competitionId}/rankedTeams")
-//    public List<TeamDTO> getRankedTeams(@PathVariable Long competitionId) {
-//        return teamService.getRankedTeams(competitionId);
-//    }
+    @GetMapping("/{username}")
+    public TeamDTO getTeamByUsersUsername(@PathVariable String username) {
+        return teamService.getTeamByUsersUsername(username);
+    }
 
     @PostMapping("/create")
     public String createTeam(@RequestParam String teamName) {
@@ -37,6 +37,11 @@ public class TeamController {
     @DeleteMapping("/removeMember")
     public void removeMemberFromTeam(@RequestParam String teamName, @RequestParam String studentUsername) {
         teamService.removeMemberFromTeam(teamName, studentUsername);
+    }
+
+    @PatchMapping("/updateScore")
+    public void updateTeamScore(@RequestParam String teamName, @RequestParam double score) {
+        teamService.updateTeamScore(teamName, score);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.csit321.ctfbackend.core.testdata;
 
+import com.csit321.ctfbackend.room.enums.Status;
 import com.csit321.ctfbackend.room.model.*;
 import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
@@ -13,6 +14,7 @@ import com.csit321.ctfbackend.user.model.enums.Role;
 import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
 import com.csit321.ctfbackend.user.repository.TeamRepository;
+import com.csit321.ctfbackend.user.utility.TeamRankingUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,10 +43,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        createTeachers();
-//        createStudents();
-//        createTestChallenges();
-//        createChallengesWithRooms();
+        createTeachers();
         createCybersecurityChallenge();
         createOSINTChallenges();
         createNetworkSecurityChallenge();
@@ -63,7 +62,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher1@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 1")
                 .build();
 
@@ -72,7 +70,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher2@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 2")
                 .build();
 
@@ -81,7 +78,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher3@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 3")
                 .build();
 
@@ -90,7 +86,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher4@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 4")
                 .build();
 
@@ -99,7 +94,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher5@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 5")
                 .build();
 
@@ -108,7 +102,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher6@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 6")
                 .build();
 
@@ -117,7 +110,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher7@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 7")
                 .build();
 
@@ -126,7 +118,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher8@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 8")
                 .build();
 
@@ -135,7 +126,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher9@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 9")
                 .build();
 
@@ -144,7 +134,6 @@ public class DataInitializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .email("teacher10@t.com")
                 .role(Role.TEACHER)
-                .userType(UserType.TEACHER)
                 .school("School 10")
                 .build();
 
@@ -164,175 +153,192 @@ public class DataInitializer implements CommandLineRunner {
         baseUserRepository.saveAll(teachers);
     }
 
-    private void createStudents() {
-        Student student1 = Student.studentBuilderEntity()
-                .username("student1")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student1@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
+    private void createStudents(List<Team> teams, int numStudents, int startingIndex) {
+        List<Student> students = new ArrayList<>();
 
-        Student student2 = Student.studentBuilderEntity()
-                .username("student2")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student2@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
+        for (int i = 0; i < numStudents; i++) {
+            int studentNumber = startingIndex + i;
+            Student student = Student.studentBuilderEntity()
+                    .username("student" + studentNumber)
+                    .password(passwordEncoder.encode("12345678"))
+                    .email("student" + studentNumber + "@g.com")
+                    .role(Role.STUDENT)
+                    .yearLevel(generateRandomNumber(1, 12))
+                    .build();
 
-        Student student3 = Student.studentBuilderEntity()
-                .username("student3")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student3@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student4 = Student.studentBuilderEntity()
-                .username("student4")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student4@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student5 = Student.studentBuilderEntity()
-                .username("student5")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student5@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student6 = Student.studentBuilderEntity()
-                .username("student6")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student6@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student7 = Student.studentBuilderEntity()
-                .username("student7")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student7@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student8 = Student.studentBuilderEntity()
-                .username("student8")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student8@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student9 = Student.studentBuilderEntity()
-                .username("student9")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student9@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        Student student10 = Student.studentBuilderEntity()
-                .username("student10")
-                .password(passwordEncoder.encode("12345678"))
-                .email("student10@g.com")
-                .role(Role.STUDENT)
-                .userType(UserType.STUDENT)
-                .yearLevel(generateRandomNumber(1, 12))
-                .build();
-
-        List<Student> students = Arrays.asList(
-                student1,
-                student2,
-                student3,
-                student4,
-                student5,
-                student6,
-                student7,
-                student8,
-                student9,
-                student10
-        );
+            // Assign students to teams in a round-robin fashion
+            Team assignedTeam = teams.get(i % teams.size());
+            assignedTeam.addMember(student);
+            students.add(student);
+            teamRepository.save(assignedTeam);
+        }
 
         baseUserRepository.saveAll(students);
     }
 
+    private void createStudentsWithoutTeams(int numStudents, int startingIndex) {
+        List<Student> students = new ArrayList<>();
+
+        for (int i = 0; i < numStudents; i++) {
+            int studentNumber = startingIndex + i;
+            Student student = Student.studentBuilderEntity()
+                    .username("student" + studentNumber)
+                    .password(passwordEncoder.encode("12345678"))
+                    .email("student" + studentNumber + "@g.com")
+                    .role(Role.STUDENT)
+                    .yearLevel(generateRandomNumber(1, 12))
+                    .build();
+
+            students.add(student);
+        }
+
+        baseUserRepository.saveAll(students);
+    }
+
+
     private void createTestCompetitions() {
 
+        // Create 5 Teams
         Team team1 = Team.builder()
-                .teamName("Team 1")
+                .teamName("Alpha")
                 .score(200.45)
+                .members(new ArrayList<>())
+                .maxMembers(3)
                 .build();
 
         Team team2 = Team.builder()
-                .teamName("Team 2")
+                .teamName("Bravo")
                 .score(90.25)
+                .members(new ArrayList<>())
+                .maxMembers(3)
                 .build();
 
         Team team3 = Team.builder()
-                .teamName("Team 3")
+                .teamName("Charlie")
                 .score(30.24)
+                .members(new ArrayList<>())
+                .maxMembers(3)
                 .build();
 
         Team team4 = Team.builder()
-                .teamName("Team 4")
+                .teamName("Delta")
                 .score(120.70)
+                .members(new ArrayList<>())
+                .maxMembers(3)
                 .build();
 
-        List<Team> teams = Arrays.asList(
-                team1,
-                team2,
-                team3,
-                team4
-        );
+        Team team5 = Team.builder()
+                .teamName("Echo")
+                .score(150.00)
+                .members(new ArrayList<>())
+                .maxMembers(3)
+                .build();
 
-        teamRepository.saveAll(teams);
+        // Create another 5 teams for another competition
+        Team team6 = Team.builder()
+                .teamName("Foxtrot")
+                .score(90.10)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
 
+        Team team7 = Team.builder()
+                .teamName("Golf")
+                .score(420.69)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
+
+        Team team8 = Team.builder()
+                .teamName("Hotel")
+                .score(5.24)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
+
+        Team team9 = Team.builder()
+                .teamName("India")
+                .score(75.00)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
+
+        Team team10 = Team.builder()
+                .teamName("Juliet")
+                .score(150.00)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
+
+        Team team11 = Team.builder()
+                .teamName("Kilo")
+                .score(600.25)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
+
+        Team team12 = Team.builder()
+                .teamName("Lima")
+                .score(0)
+                .members(new ArrayList<>())
+                .maxMembers(5)
+                .build();
+
+        // Save Teams to the repository
+        List<Team> teamsComp1 = Arrays.asList(team1, team2, team3, team4, team5);
+        TeamRankingUtility.rankTeams(teamsComp1);
+        teamRepository.saveAll(teamsComp1);
+
+        List<Team> teamsComp2 = Arrays.asList(team6, team7, team8, team9, team10, team11, team12);
+        TeamRankingUtility.rankTeams(teamsComp2);
+        teamRepository.saveAll(teamsComp2);
+
+        // Create one Competition and associate the 5 teams
         Competition competition1 = Competition.builder()
-                .competitionName("Competition 1")
+                .competitionName("Competition 1 All Stars 2024")
                 .competitionCode("COMP1")
-                .maxTeams(10)
-                .maxTeamSize(5)
-                .teamsList(Arrays.asList(team1, team2))
-                .build();
-
-        Competition competition2 = Competition.builder()
-                .competitionName("Competition 2")
-                .competitionCode("COMP2")
                 .maxTeams(5)
-                .maxTeamSize(4)
-                .teamsList(Arrays.asList(team3, team4))
+                .maxTeamSize(3) // Set max team size to 3
+                .teamsList(new ArrayList<>()) // Initialize with empty list
+                .status(Status.IN_PROGRESS)
                 .build();
 
-        List<Competition> competitions = Arrays.asList(
-                competition1,
-                competition2
-        );
+        // Create another Competition and associate the 5 teams
+        Competition competition2 = Competition.builder()
+                .competitionName("Competition 2 Regionals 2047")
+                .competitionCode("COMP2")
+                .maxTeams(7)
+                .maxTeamSize(5) // Set max team size to 3
+                .teamsList(new ArrayList<>()) // Initialize with empty list
+                .status(Status.IN_PROGRESS)
+                .build();
 
-//        competitionRepository.saveAll(competitions);
+        // Save the Competition to generate an ID
         competitionRepository.save(competition1);
+        competitionRepository.save(competition2);
 
-        team1.setCompetition(competition1);
-        team2.setCompetition(competition1);
-        team3.setCompetition(competition1);
-        team4.setCompetition(competition1);
+        // Associate each team with the competition and update the team's competition reference
+        for (Team team : teamsComp1) {
+            team.setCompetition(competition1);
+            teamRepository.save(team); // Save each team after setting the competition
+            competition1.addTeam(team); // Add team to the competition's team list
+        }
 
-        teamRepository.saveAll(teams);
+        for (Team team : teamsComp2) {
+            team.setCompetition(competition2);
+            teamRepository.save(team); // Save each team after setting the competition
+            competition2.addTeam(team); // Add team to the competition's team list
+        }
+
+        createStudents(teamsComp1, 15, 1);
+        createStudents(teamsComp2, 35, 16);
+        createStudentsWithoutTeams(21, 51);
+
+        // Update the Competition with the teams list
+        competitionRepository.save(competition1);
+        competitionRepository.save(competition2);
     }
+
 
     private void createCybersecurityChallenge() {
         // Create a new Room

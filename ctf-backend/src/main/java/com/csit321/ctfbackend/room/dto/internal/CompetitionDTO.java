@@ -24,6 +24,8 @@ public class CompetitionDTO {
 
     private int maxTeamSize;
 
+    private String status;
+
     private List<TeamDTO> teamsList = new ArrayList<>();
 
 }

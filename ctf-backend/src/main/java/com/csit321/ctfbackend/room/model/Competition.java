@@ -1,6 +1,7 @@
 package com.csit321.ctfbackend.room.model;
 
 import com.csit321.ctfbackend.core.utilities.RandomString;
+import com.csit321.ctfbackend.room.enums.Status;
 import com.csit321.ctfbackend.user.model.Team;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +28,10 @@ public class Competition {
     private int maxTeams = 2;
 
     private int maxTeamSize = 2;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.STARTED;
 
     @OneToMany(mappedBy = "competition")
     private List<Team> teamsList = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.csit321.ctfbackend.user.controller;
 
 import com.csit321.ctfbackend.core.api.APIResponse;
 import com.csit321.ctfbackend.core.config.jwt.JwtService;
+import com.csit321.ctfbackend.user.dto.external.PublicStudentDTO;
 import com.csit321.ctfbackend.user.dto.internal.StudentDTO;
 import com.csit321.ctfbackend.user.dto.internal.StudentUpdateDTO;
 import com.csit321.ctfbackend.user.service.BaseUserService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -25,6 +27,11 @@ public class StudentController {
 
     private final StudentService studentService;
     private final BaseUserService baseUserService;
+
+    @GetMapping("/notInTeam")
+    public List<PublicStudentDTO> getStudentsNotInTeam() {
+        return studentService.getStudentsNotInTeam();
+    }
 
     // Endpoint to update the score of a student
     @PatchMapping("/score")

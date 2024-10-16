@@ -6,6 +6,7 @@ import com.csit321.ctfbackend.user.dto.internal.TeacherUpdateDTO;
 import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.model.Teacher;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
+import com.csit321.ctfbackend.user.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class TeacherService {
 
     private final BaseUserRepository baseUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TeacherRepository teacherRepository;
 
     public TeacherUpdateDTO updateTeacherInfo(String username, TeacherUpdateDTO teacherUpdateDTO) {
         Teacher targetTeacher = (Teacher) baseUserRepository.findByUsername(username).orElseThrow(() -> new CustomNotFoundException("Teacher not found."));
@@ -36,4 +38,7 @@ public class TeacherService {
                 .build();
     }
 
+    public void save(Teacher teacher) {
+        teacherRepository.save(teacher);
+    }
 }

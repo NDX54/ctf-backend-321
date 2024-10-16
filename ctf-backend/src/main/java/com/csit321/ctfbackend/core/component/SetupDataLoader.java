@@ -67,7 +67,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 .username(adminUsername)
                 .email(adminEmail)
                 .password(passwordEncoder.encode(adminPassword))
-                .userType(UserType.BASE_USER)
                 .role(Role.ADMIN)
                 .isAccountNonExpired(true)
                 .isAccountNonLocked(true)

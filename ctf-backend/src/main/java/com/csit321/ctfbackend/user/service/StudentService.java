@@ -3,15 +3,19 @@ package com.csit321.ctfbackend.user.service;
 import com.csit321.ctfbackend.core.api.exceptions.CustomNotFoundException;
 import com.csit321.ctfbackend.room.dto.internal.ScoreUpdateDTO;
 import com.csit321.ctfbackend.room.service.ScoreUpdateService;
+import com.csit321.ctfbackend.user.dto.external.PublicStudentDTO;
+import com.csit321.ctfbackend.user.dto.internal.StudentDTO;
 import com.csit321.ctfbackend.user.dto.internal.StudentUpdateDTO;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
+import com.csit321.ctfbackend.user.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +25,7 @@ public class StudentService {
     private final BaseUserRepository baseUserRepository;
     private final ScoreUpdateService scoreUpdateService;
     private final PasswordEncoder passwordEncoder;
+    private final StudentRepository studentRepository;
 
     // This saves the student's score.
     public void saveStudentScore(String username, double score) {
@@ -81,5 +86,29 @@ public class StudentService {
             throw new CustomNotFoundException("User not found");
         }
 
+    }
+
+    public List<PublicStudentDTO> getStudentsNotInTeam() {
+        List<Student> studentsNotInTeam = studentRepository.getAllStudentsNotInTeam();
+        List<PublicStudentDTO> studentDTOS = new ArrayList<>();
+        studentsNotInTeam.forEach(student -> studentDTOS.add(convertToStudentDTO(student)));
+
+        return studentDTOS;
+    }
+
+    private PublicStudentDTO convertToStudentDTO(Student student) {
+        return PublicStudentDTO.publicStudentDTOBuilder()
+                .userId(student.getUserId())
+                .username(student.getUsername())
+                .email(student.getEmail())
+                .yearLevel(student.getYearLevel())
+                .role(student.getRole().getValue())
+                .token("REDACTED")
+                .score(student.getScore())
+                .build();
+    }
+
+    public void save(Student student) {
+        studentRepository.save(student);
     }
 }

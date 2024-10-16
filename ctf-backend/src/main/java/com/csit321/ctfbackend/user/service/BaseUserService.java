@@ -47,7 +47,6 @@ public class BaseUserService {
                 .username(studentDTO.getUsername())
                 .email(studentDTO.getEmail())
                 .password(passwordEncoder.encode(studentDTO.getPassword()))
-                .userType(UserType.STUDENT)
                 .role(Role.STUDENT)
                 .yearLevel(studentDTO.getYearLevel())
                 .score(0.0)
@@ -67,7 +66,6 @@ public class BaseUserService {
                 .username(teacherDTO.getUsername())
                 .email(teacherDTO.getEmail())
                 .password(passwordEncoder.encode(teacherDTO.getPassword()))
-                .userType(UserType.TEACHER)
                 .role(Role.TEACHER)
                 .username(teacherDTO.getUsername())
                 .school(teacherDTO.getSchool())
@@ -102,7 +100,6 @@ public class BaseUserService {
                     .username(teacher.getUsername())
                     .email(teacher.getEmail())
                     .password(teacher.getPassword())
-                    .userType(teacher.getUserType().getValue())
                     .role(teacher.getRole().getValue())
                     .school(teacher.getSchool())
                     .build();
@@ -114,7 +111,6 @@ public class BaseUserService {
                     .username(baseUser.getUsername())
                     .email(baseUser.getEmail())
                     .password(baseUser.getPassword())
-                    .userType(baseUser.getUserType().getValue())
                     .role(baseUser.getRole().getValue())
                     .build();
 
@@ -128,7 +124,6 @@ public class BaseUserService {
                     .userId(student.getUserId())
                     .username(student.getUsername())
                     .email(student.getEmail())
-                    .userType(student.getUserType().getValue())
                     .role(student.getRole().getValue())
                     .yearLevel(student.getYearLevel())
                     .score(student.getScore())
@@ -140,7 +135,6 @@ public class BaseUserService {
                     .userId(teacher.getUserId())
                     .username(teacher.getUsername())
                     .email(teacher.getEmail())
-                    .userType(teacher.getUserType().getValue())
                     .role(teacher.getRole().getValue())
                     .school(teacher.getSchool())
                     .build();
@@ -150,9 +144,7 @@ public class BaseUserService {
             return PublicBaseUserDTO.publicBaseUserDTOBuilder()
                     .userId(baseUser.getUserId())
                     .username(baseUser.getUsername())
-                    .userType(baseUser.getUsername())
                     .email(baseUser.getEmail())
-                    .userType(baseUser.getUserType().getValue())
                     .role(baseUser.getRole().getValue())
                     .build();
         }
@@ -178,7 +170,6 @@ public class BaseUserService {
                 .username(teacher.getUsername())
                 .email(teacher.getEmail())
                 .password(teacher.getPassword())
-                .userType(teacher.getUserType().getValue())
                 .role(teacher.getRole().getValue())
                 .school(teacher.getSchool())
                 .build();
@@ -233,7 +224,6 @@ public class BaseUserService {
                 .userId(user.getUserId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .userType(user.getUserType().getValue())
                 .build();
     }
 
@@ -272,7 +262,6 @@ public class BaseUserService {
                 .userId(user.getUserId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .userType(user.getUserType().getValue())
                 .role(user.getRole().getValue())
                 .token(jwtToken)
                 .build();
@@ -347,5 +336,9 @@ public class BaseUserService {
                 .build();
 
         tokenRepository.save(token);
+    }
+
+    public void save(BaseUser baseUser) {
+        baseUserRepository.save(baseUser);
     }
 }

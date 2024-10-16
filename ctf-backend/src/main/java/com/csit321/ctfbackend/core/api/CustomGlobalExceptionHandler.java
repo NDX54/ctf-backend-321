@@ -118,6 +118,11 @@ public class CustomGlobalExceptionHandler {
         return APIResponse.build(exc.getMessage(), "Member not in team", HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(CustomBadRequestException.class)
+    public ResponseEntity<?> handleBadRequestException(CustomBadRequestException exc, WebRequest request) {
+        return APIResponse.build(exc.getMessage(), "Bad Request", HttpStatus.BAD_REQUEST, request);
+    }
+
 
 }
 

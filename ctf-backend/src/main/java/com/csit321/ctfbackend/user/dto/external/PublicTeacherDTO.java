@@ -22,11 +22,10 @@ public class PublicTeacherDTO extends PublicBaseUserDTO {
                             @NotBlank(message = "Email must not be blank")
                             @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
                                     flags = Pattern.Flag.CASE_INSENSITIVE) String email,
-                            String userType,
                             String role,
                             String token,
                             String school) {
-        super(userId, username, email, userType, role, token);
+        super(userId, username, email, role, token);
         this.school = school;
     }
 }
