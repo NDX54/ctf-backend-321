@@ -45,7 +45,6 @@ public class SecurityConfig {
             "/app/**",
             "/api/team/**",
             "/api/competition/**",
-            // For debugging only. Remove in production.
             "/api/challenge/**",
             "/api/room/**",
             "/api/question/**",

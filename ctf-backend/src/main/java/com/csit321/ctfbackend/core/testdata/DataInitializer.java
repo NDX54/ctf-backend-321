@@ -41,12 +41,15 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createTeachers();
-        createStudents();
+//        createTeachers();
+//        createStudents();
 //        createTestChallenges();
 //        createChallengesWithRooms();
         createCybersecurityChallenge();
         createOSINTChallenges();
+        createNetworkSecurityChallenge();
+        createCryptographyChallenge();
+        createEthicalHackingChallenge();
         createTestCompetitions();
     }
 
@@ -1184,4 +1187,622 @@ public class DataInitializer implements CommandLineRunner {
         // Save the Challenge (cascades to save Room and Questions)
         challengeRepository.save(dataBreachesChallenge);
     }
+
+    private void createNetworkSecurityChallenge() {
+        // Create a new Room for Network Security Fundamentals
+        Room networkSecurityRoom = new Room();
+        networkSecurityRoom.setName("Network Security Fundamentals");
+        networkSecurityRoom.setDescription("Welcome to the Network Security Fundamentals room. Explore the basics of securing networks.");
+        networkSecurityRoom.setDifficulty(Difficulty.BEGINNER);
+
+        // Create a new Challenge and associate it with the Room
+        Challenge networkSecurityChallenge = Challenge.builder()
+                .name("Network Security Fundamentals")
+                .description("A set of questions covering basic network security concepts.")
+                .difficulty(Difficulty.BEGINNER)
+                .points(0) // We'll calculate total points from questions
+                .questions(new ArrayList<>())
+                .room(networkSecurityRoom) // Associate the Room
+                .isChallengeOpen(true)
+                .build();
+
+        // Create the list of Questions for Network Security Fundamentals
+        List<Question> networkSecurityQuestions = Arrays.asList(
+                Question.builder()
+                        .questionText("What is the purpose of a firewall in network security?")
+                        .description("Understanding the role of firewalls.")
+                        .hint("Think about network traffic filtering.")
+                        .flag("FLAG{FIREWALL_PROTECTION}")
+                        .options(Arrays.asList(
+                                "To provide wireless connectivity",
+                                "To prevent unauthorized access by filtering incoming and outgoing network traffic",
+                                "To increase network speed",
+                                "To manage user passwords"
+                        ))
+                        .answer("To prevent unauthorized access by filtering incoming and outgoing network traffic")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which protocol is used to securely access a remote computer over an unsecured network?")
+                        .description("Exploring secure remote access protocols.")
+                        .hint("Consider Secure Shell.")
+                        .flag("FLAG{USE_SSH}")
+                        .options(Arrays.asList(
+                                "FTP",
+                                "Telnet",
+                                "SSH",
+                                "HTTP"
+                        ))
+                        .answer("SSH")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What does the term 'network segmentation' refer to?")
+                        .description("Understanding network architecture.")
+                        .hint("Think about dividing a network into smaller parts.")
+                        .flag("FLAG{SEGMENT_NETWORK}")
+                        .options(Arrays.asList(
+                                "Combining multiple networks into one",
+                                "Dividing a network into multiple subnetworks to enhance security and performance",
+                                "Disconnecting all devices from the network",
+                                "Upgrading network hardware"
+                        ))
+                        .answer("Dividing a network into multiple subnetworks to enhance security and performance")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which device inspects incoming and outgoing network traffic and decides whether to allow or block specific traffic based on security rules?")
+                        .description("Identifying network security devices.")
+                        .hint("Consider devices that enforce security policies.")
+                        .flag("FLAG{FIREWALL_DEVICE}")
+                        .options(Arrays.asList(
+                                "Router",
+                                "Switch",
+                                "Firewall",
+                                "Modem"
+                        ))
+                        .answer("Firewall")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is the main purpose of intrusion detection systems (IDS)?")
+                        .description("Learning about network monitoring tools.")
+                        .hint("Think about detecting malicious activities.")
+                        .flag("FLAG{IDS_PURPOSE}")
+                        .options(Arrays.asList(
+                                "To block unauthorized access",
+                                "To detect and alert administrators about potential security breaches",
+                                "To encrypt network traffic",
+                                "To provide IP addresses to devices"
+                        ))
+                        .answer("To detect and alert administrators about potential security breaches")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which layer of the OSI model is responsible for end-to-end communication and error checking?")
+                        .description("Understanding the OSI model.")
+                        .hint("Consider the Transport Layer.")
+                        .flag("FLAG{OSI_TRANSPORT_LAYER}")
+                        .options(Arrays.asList(
+                                "Physical Layer",
+                                "Data Link Layer",
+                                "Transport Layer",
+                                "Application Layer"
+                        ))
+                        .answer("Transport Layer")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is the term for a network that spans a relatively small area, such as a single building?")
+                        .description("Learning about network types.")
+                        .hint("Think about Local Area Networks.")
+                        .flag("FLAG{DEFINE_LAN}")
+                        .options(Arrays.asList(
+                                "WAN",
+                                "MAN",
+                                "LAN",
+                                "PAN"
+                        ))
+                        .answer("LAN")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which protocol is used to securely transmit web pages over the internet?")
+                        .description("Exploring secure web communication.")
+                        .hint("Consider HTTPS.")
+                        .flag("FLAG{USE_HTTPS}")
+                        .options(Arrays.asList(
+                                "HTTP",
+                                "FTP",
+                                "SMTP",
+                                "HTTPS"
+                        ))
+                        .answer("HTTPS")
+                        .points(50.0)
+                        .correctOption(3)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What does 'DoS' stand for in network security, and what does it involve?")
+                        .description("Understanding network attacks.")
+                        .hint("Think about Denial of Service.")
+                        .flag("FLAG{DOS_ATTACK}")
+                        .options(Arrays.asList(
+                                "Denial of Security; it encrypts data",
+                                "Data over Server; it backs up data",
+                                "Denial of Service; it overwhelms a network or system to make it unavailable",
+                                "Device on Standby; it puts devices to sleep"
+                        ))
+                        .answer("Denial of Service; it overwhelms a network or system to make it unavailable")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which of the following is a best practice for securing a wireless network?")
+                        .description("Learning about wireless security.")
+                        .hint("Consider encryption methods.")
+                        .flag("FLAG{SECURE_WIRELESS}")
+                        .options(Arrays.asList(
+                                "Using WEP encryption",
+                                "Leaving the network open without a password",
+                                "Using WPA2 or WPA3 encryption",
+                                "Hiding the SSID"
+                        ))
+                        .answer("Using WPA2 or WPA3 encryption")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(networkSecurityChallenge)
+                        .room(networkSecurityRoom)
+                        .build()
+        );
+
+        // Calculate total points and add questions to the challenge
+        double totalPoints = 0;
+        for (Question question : networkSecurityQuestions) {
+            totalPoints += question.getPoints();
+            networkSecurityChallenge.addQuestion(question);
+        }
+        networkSecurityChallenge.setPoints(totalPoints);
+        networkSecurityRoom.setPoints(totalPoints);
+
+        // Save the Challenge (cascades to save Room and Questions)
+        challengeRepository.save(networkSecurityChallenge);
+    }
+
+    private void createCryptographyChallenge() {
+        // Create a new Room for Cryptography Concepts
+        Room cryptographyRoom = new Room();
+        cryptographyRoom.setName("Cryptography Concepts");
+        cryptographyRoom.setDescription("Welcome to the Cryptography Concepts room. Dive into the world of encryption and data protection.");
+        cryptographyRoom.setDifficulty(Difficulty.INTERMEDIATE);
+
+        // Create a new Challenge and associate it with the Room
+        Challenge cryptographyChallenge = Challenge.builder()
+                .name("Cryptography Concepts")
+                .description("An intermediate set of questions on cryptographic principles and practices.")
+                .difficulty(Difficulty.INTERMEDIATE)
+                .points(0) // We'll calculate total points from questions
+                .questions(new ArrayList<>())
+                .room(cryptographyRoom) // Associate the Room
+                .isChallengeOpen(false)
+                .build();
+
+        // Create the list of Questions for Cryptography Concepts
+        List<Question> cryptographyQuestions = Arrays.asList(
+                Question.builder()
+                        .questionText("What is the primary difference between symmetric and asymmetric encryption?")
+                        .description("Understanding encryption types.")
+                        .hint("Consider key usage in encryption and decryption.")
+                        .flag("FLAG{SYMMETRIC_VS_ASYMMETRIC}")
+                        .options(Arrays.asList(
+                                "Symmetric uses one key for encryption, asymmetric uses two separate keys",
+                                "Symmetric is slower than asymmetric",
+                                "Asymmetric encryption is less secure",
+                                "There is no difference"
+                        ))
+                        .answer("Symmetric uses one key for encryption, asymmetric uses two separate keys")
+                        .points(50.0)
+                        .correctOption(0)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which algorithm is considered a symmetric key encryption algorithm?")
+                        .description("Identifying encryption algorithms.")
+                        .hint("Think about AES.")
+                        .flag("FLAG{USE_AES}")
+                        .options(Arrays.asList(
+                                "RSA",
+                                "DSA",
+                                "AES",
+                                "ECDSA"
+                        ))
+                        .answer("AES")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is the main purpose of a digital signature?")
+                        .description("Exploring digital authentication methods.")
+                        .hint("Consider integrity and authentication.")
+                        .flag("FLAG{DIGITAL_SIGNATURE_PURPOSE}")
+                        .options(Arrays.asList(
+                                "To encrypt data",
+                                "To compress files",
+                                "To verify the authenticity and integrity of a message",
+                                "To generate random numbers"
+                        ))
+                        .answer("To verify the authenticity and integrity of a message")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What does SSL/TLS stand for, and what is its purpose?")
+                        .description("Understanding secure communication protocols.")
+                        .hint("Consider Secure Sockets Layer and Transport Layer Security.")
+                        .flag("FLAG{SSL_TLS_PURPOSE}")
+                        .options(Arrays.asList(
+                                "Secure Sockets Layer / Transport Layer Security; protocols for encrypting internet traffic",
+                                "Super Secure Layer / Trusted Link Security; protocols for data compression",
+                                "Single Sign-On / Token Layer Security; methods for authentication",
+                                "Server Side Logic / Transaction Logging System; database management tools"
+                        ))
+                        .answer("Secure Sockets Layer / Transport Layer Security; protocols for encrypting internet traffic")
+                        .points(50.0)
+                        .correctOption(0)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is a hash function, and what is its primary use in cryptography?")
+                        .description("Learning about hash functions.")
+                        .hint("Consider data integrity checks.")
+                        .flag("FLAG{HASH_FUNCTION_USE}")
+                        .options(Arrays.asList(
+                                "A function that encrypts data for secure transmission",
+                                "A function that maps data of arbitrary size to fixed-size values for integrity verification",
+                                "A function that compresses files to save space",
+                                "A function that generates encryption keys"
+                        ))
+                        .answer("A function that maps data of arbitrary size to fixed-size values for integrity verification")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which of the following is an example of a hash algorithm?")
+                        .description("Identifying cryptographic hash algorithms.")
+                        .hint("Think about SHA-256.")
+                        .flag("FLAG{USE_SHA256}")
+                        .options(Arrays.asList(
+                                "RSA",
+                                "AES",
+                                "SHA-256",
+                                "Diffie-Hellman"
+                        ))
+                        .answer("SHA-256")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is the purpose of the Diffie-Hellman algorithm?")
+                        .description("Understanding key exchange methods.")
+                        .hint("Consider secure key exchange over public channels.")
+                        .flag("FLAG{DIFFIE_HELLMAN_PURPOSE}")
+                        .options(Arrays.asList(
+                                "Encrypting data using symmetric keys",
+                                "Exchanging cryptographic keys securely over a public channel",
+                                "Hashing data for integrity",
+                                "Creating digital certificates"
+                        ))
+                        .answer("Exchanging cryptographic keys securely over a public channel")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is 'public key infrastructure' (PKI) and its role in cryptography?")
+                        .description("Exploring PKI concepts.")
+                        .hint("Consider certificate authorities and key management.")
+                        .flag("FLAG{UNDERSTAND_PKI}")
+                        .options(Arrays.asList(
+                                "A system for secure key exchange between users",
+                                "A framework that manages public keys and digital certificates",
+                                "A method for encrypting emails",
+                                "A protocol for secure web browsing"
+                        ))
+                        .answer("A framework that manages public keys and digital certificates")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which cryptographic attack involves attempting all possible keys until the correct one is found?")
+                        .description("Understanding cryptographic attacks.")
+                        .hint("Consider brute-force methods.")
+                        .flag("FLAG{BRUTE_FORCE_ATTACK}")
+                        .options(Arrays.asList(
+                                "Brute-force attack",
+                                "Man-in-the-middle attack",
+                                "Replay attack",
+                                "Phishing attack"
+                        ))
+                        .answer("Brute-force attack")
+                        .points(50.0)
+                        .correctOption(0)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is 'steganography' in the context of data security?")
+                        .description("Exploring data hiding techniques.")
+                        .hint("Consider hiding information within other files.")
+                        .flag("FLAG{DEFINE_STEGANOGRAPHY}")
+                        .options(Arrays.asList(
+                                "Encrypting messages with a cipher",
+                                "Hiding messages within other non-secret text or data",
+                                "Analyzing network traffic",
+                                "Compressing files to reduce size"
+                        ))
+                        .answer("Hiding messages within other non-secret text or data")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(cryptographyChallenge)
+                        .room(cryptographyRoom)
+                        .build()
+        );
+
+        // Calculate total points and add questions to the challenge
+        double totalPoints = 0;
+        for (Question question : cryptographyQuestions) {
+            totalPoints += question.getPoints();
+            cryptographyChallenge.addQuestion(question);
+        }
+        cryptographyChallenge.setPoints(totalPoints);
+        cryptographyRoom.setPoints(totalPoints);
+
+        // Save the Challenge (cascades to save Room and Questions)
+        challengeRepository.save(cryptographyChallenge);
+    }
+
+    private void createEthicalHackingChallenge() {
+        // Create a new Room for Ethical Hacking Techniques
+        Room ethicalHackingRoom = new Room();
+        ethicalHackingRoom.setName("Ethical Hacking Techniques");
+        ethicalHackingRoom.setDescription("Welcome to the Ethical Hacking Techniques room. Master advanced hacking methods responsibly.");
+        ethicalHackingRoom.setDifficulty(Difficulty.ADVANCED);
+
+        // Create a new Challenge and associate it with the Room
+        Challenge ethicalHackingChallenge = Challenge.builder()
+                .name("Ethical Hacking Techniques")
+                .description("An advanced set of questions on ethical hacking practices and methodologies.")
+                .difficulty(Difficulty.ADVANCED)
+                .points(0) // We'll calculate total points from questions
+                .questions(new ArrayList<>())
+                .room(ethicalHackingRoom) // Associate the Room
+                .isChallengeOpen(false)
+                .build();
+
+        // Create the list of Questions for Ethical Hacking Techniques
+        List<Question> ethicalHackingQuestions = Arrays.asList(
+                Question.builder()
+                        .questionText("What is the primary objective of a penetration test in cybersecurity?")
+                        .description("Understanding penetration testing purposes.")
+                        .hint("Consider assessing security measures.")
+                        .flag("FLAG{PEN_TEST_OBJECTIVE}")
+                        .options(Arrays.asList(
+                                "To install malware",
+                                "To evaluate the security of a system by simulating attacks",
+                                "To permanently disable systems",
+                                "To train users on software applications"
+                        ))
+                        .answer("To evaluate the security of a system by simulating attacks")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which phase of ethical hacking involves gathering information without directly interacting with the target system?")
+                        .description("Exploring hacking phases.")
+                        .hint("Consider passive information gathering.")
+                        .flag("FLAG{RECONNAISSANCE_PHASE}")
+                        .options(Arrays.asList(
+                                "Scanning",
+                                "Gaining Access",
+                                "Reconnaissance",
+                                "Maintaining Access"
+                        ))
+                        .answer("Reconnaissance")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is 'SQL Injection' and how does it impact web applications?")
+                        .description("Understanding web application vulnerabilities.")
+                        .hint("Consider manipulating database queries.")
+                        .flag("FLAG{SQL_INJECTION_IMPACT}")
+                        .options(Arrays.asList(
+                                "Injecting SQL databases with malware",
+                                "A code injection technique that might destroy a database",
+                                "A method to speed up database queries",
+                                "Encrypting SQL queries for security"
+                        ))
+                        .answer("A code injection technique that might destroy a database")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which tool is commonly used for network scanning and vulnerability detection in ethical hacking?")
+                        .description("Learning about hacking tools.")
+                        .hint("Consider Nmap.")
+                        .flag("FLAG{USE_NMAP}")
+                        .options(Arrays.asList(
+                                "Photoshop",
+                                "Nmap",
+                                "Microsoft Word",
+                                "Visual Studio"
+                        ))
+                        .answer("Nmap")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What does 'privilege escalation' mean in the context of ethical hacking?")
+                        .description("Understanding attack techniques.")
+                        .hint("Consider gaining higher access levels.")
+                        .flag("FLAG{PRIVILEGE_ESCALATION}")
+                        .options(Arrays.asList(
+                                "Reducing user permissions",
+                                "Gaining higher levels of access than initially granted",
+                                "Logging out of a system",
+                                "Updating user profiles"
+                        ))
+                        .answer("Gaining higher levels of access than initially granted")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Explain the difference between black-box, white-box, and gray-box penetration testing.")
+                        .description("Exploring penetration testing methodologies.")
+                        .hint("Consider the level of information provided to testers.")
+                        .flag("FLAG{PEN_TEST_TYPES}")
+                        .options(Arrays.asList(
+                                "They are all the same type of testing",
+                                "Black-box has full knowledge, white-box has none, gray-box has partial",
+                                "Black-box has no knowledge, white-box has full knowledge, gray-box has partial knowledge",
+                                "They refer to different operating systems"
+                        ))
+                        .answer("Black-box has no knowledge, white-box has full knowledge, gray-box has partial knowledge")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What is 'Metasploit' and how is it used in ethical hacking?")
+                        .description("Understanding exploitation frameworks.")
+                        .hint("Consider tools for developing and executing exploit code.")
+                        .flag("FLAG{METASPLOIT_USAGE}")
+                        .options(Arrays.asList(
+                                "A web browser",
+                                "A penetration testing framework used to develop and execute exploit code against a remote target machine",
+                                "An antivirus software",
+                                "A database management system"
+                        ))
+                        .answer("A penetration testing framework used to develop and execute exploit code against a remote target machine")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Which attack involves intercepting and altering communication between two parties without their knowledge?")
+                        .description("Learning about network attacks.")
+                        .hint("Consider Man-in-the-Middle attacks.")
+                        .flag("FLAG{MITM_ATTACK}")
+                        .options(Arrays.asList(
+                                "Denial of Service",
+                                "Phishing",
+                                "Man-in-the-Middle attack",
+                                "Social Engineering"
+                        ))
+                        .answer("Man-in-the-Middle attack")
+                        .points(50.0)
+                        .correctOption(2)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("What legal considerations must an ethical hacker be aware of before conducting a penetration test?")
+                        .description("Understanding legal and ethical responsibilities.")
+                        .hint("Consider authorization and scope.")
+                        .flag("FLAG{LEGAL_CONSIDERATIONS}")
+                        .options(Arrays.asList(
+                                "No legal considerations are necessary",
+                                "They must obtain proper authorization and define the scope of testing to avoid legal repercussions",
+                                "They can test any system they choose",
+                                "Only verbal consent is needed"
+                        ))
+                        .answer("They must obtain proper authorization and define the scope of testing to avoid legal repercussions")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build(),
+                Question.builder()
+                        .questionText("Describe the purpose of 'post-exploitation' in the ethical hacking process.")
+                        .description("Exploring hacking phases.")
+                        .hint("Consider actions after gaining access.")
+                        .flag("FLAG{POST_EXPLOITATION_PURPOSE}")
+                        .options(Arrays.asList(
+                                "Cleaning up evidence of the attack",
+                                "Maintaining access, gathering additional data, and pivoting to other systems",
+                                "Reporting findings to authorities",
+                                "None of the above"
+                        ))
+                        .answer("Maintaining access, gathering additional data, and pivoting to other systems")
+                        .points(50.0)
+                        .correctOption(1)
+                        .challenge(ethicalHackingChallenge)
+                        .room(ethicalHackingRoom)
+                        .build()
+        );
+
+        // Calculate total points and add questions to the challenge
+        double totalPoints = 0;
+        for (Question question : ethicalHackingQuestions) {
+            totalPoints += question.getPoints();
+            ethicalHackingChallenge.addQuestion(question);
+        }
+        ethicalHackingChallenge.setPoints(totalPoints);
+        ethicalHackingRoom.setPoints(totalPoints);
+
+        // Save the Challenge (cascades to save Room and Questions)
+        challengeRepository.save(ethicalHackingChallenge);
+    }
+
 }
+
+
