@@ -24,6 +24,16 @@ public class ChallengeController {
         return challengeService.getAllChallenges();
     }
 
+    @GetMapping("/open")
+    public List<ChallengeDTO> getAllOpenChallenges() {
+        return challengeService.getAllOpenChallenges();
+    }
+
+    @GetMapping("/closed")
+    public List<ChallengeDTO> getAllClosedChallenges() {
+        return challengeService.getAllClosedChallenges();
+    }
+
     // Endpoint to get a specific challenge by its ID
     @GetMapping("/{challengeId}")
     public ResponseEntity<?> getChallenge(@PathVariable Long challengeId) {

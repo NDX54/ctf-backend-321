@@ -39,6 +39,8 @@ public class Challenge {
     @Column(nullable = false)
     private double points;
 
+    private boolean isChallengeOpen = true;
+
     // List of questions associated with the challenge
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();

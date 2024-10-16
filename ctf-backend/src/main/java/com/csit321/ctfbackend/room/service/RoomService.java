@@ -33,7 +33,10 @@ public class RoomService {
     private RoomDTO convertToRoomDTO(Room room) {
         return RoomDTO.builder()
                 .roomId(room.getRoomId())
+                .name(room.getName())
+                .difficulty(room.getDifficulty())
                 .description(room.getDescription())
+                .points(room.getPoints())
                 .build();
     }
 

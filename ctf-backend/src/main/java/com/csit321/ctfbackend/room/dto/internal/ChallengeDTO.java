@@ -30,6 +30,8 @@ public class ChallengeDTO {
     // Description of the challenge
     private double points;
 
+    private boolean isChallengeOpen;
+
     // List of questions in the challenge
     @Schema(description = "The list of questions in a challenge", hidden = true)
     private List<QuestionDTO> questions;

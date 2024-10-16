@@ -1,5 +1,6 @@
 package com.csit321.ctfbackend.room.model;
 
+import com.csit321.ctfbackend.room.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +20,15 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long roomId;
 
+    private String name;
+
+    private Difficulty difficulty;
+
     @Lob
     @Column(nullable = false)
     private String description;
+
+    private double points;
 
     @OneToOne(mappedBy = "room")
     private Challenge challenge;

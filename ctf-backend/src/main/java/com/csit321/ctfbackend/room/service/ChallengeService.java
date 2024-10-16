@@ -6,11 +6,8 @@ import com.csit321.ctfbackend.room.dto.internal.QuestionDTO;
 import com.csit321.ctfbackend.room.enums.Difficulty;
 import com.csit321.ctfbackend.room.model.Challenge;
 import com.csit321.ctfbackend.room.model.Question;
-import com.csit321.ctfbackend.room.model.QuestionData;
-import com.csit321.ctfbackend.room.model.QuestionItem;
 import com.csit321.ctfbackend.room.repository.ChallengeRepository;
 import com.csit321.ctfbackend.room.repository.QuestionRepository;
-import com.csit321.ctfbackend.user.dto.external.TeamDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +25,24 @@ public class ChallengeService {
     public List<ChallengeDTO> getAllChallenges() {
         List<Challenge> challenges = challengeRepository.findAll();
         List<ChallengeDTO> challengeDTOS = new ArrayList<>();
-        for (Challenge challenge : challenges) {
-            challengeDTOS.add(convertToChallengeDTO(challenge));
-        }
+        challenges.forEach(challenge -> challengeDTOS.add(convertToChallengeDTO(challenge)));
+
+        return challengeDTOS;
+    }
+
+    public List<ChallengeDTO> getAllOpenChallenges() {
+        List<Challenge> challenges = challengeRepository.findAllOpenChallenges();
+        List<ChallengeDTO> challengeDTOS = new ArrayList<>();
+        challenges.forEach(challenge -> challengeDTOS.add(convertToChallengeDTO(challenge)));
+
+        return challengeDTOS;
+    }
+
+    public List<ChallengeDTO> getAllClosedChallenges() {
+        List<Challenge> challenges = challengeRepository.findAllClosedChallenges();
+        List<ChallengeDTO> challengeDTOS = new ArrayList<>();
+        challenges.forEach(challenge -> challengeDTOS.add(convertToChallengeDTO(challenge)));
+
         return challengeDTOS;
     }
 
@@ -91,6 +103,7 @@ public class ChallengeService {
                 .description(challenge.getDescription())
                 .difficulty(challenge.getDifficulty().getValue())
                 .points(challenge.getPoints())
+                .isChallengeOpen(challenge.isChallengeOpen())
                 .questions(questionDTOS)
                 .build();
     }
