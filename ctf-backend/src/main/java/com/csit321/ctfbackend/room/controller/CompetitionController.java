@@ -48,6 +48,11 @@ public class CompetitionController {
         return competitionService.createCompetition(name, maxTeams, maxTeamSize);
     }
 
+    @PostMapping("/{competitionCode}/teams/create")
+    public TeamDTO createTeam(@PathVariable String competitionCode, @RequestParam String teamName) {
+        return competitionService.addTeamToCompetition(competitionCode, teamName);
+    }
+
     @PostMapping("/{competitionCode}/teams/{teamName}/add-student")
     public ResponseEntity<String> addStudentToTeam(
             @PathVariable String competitionCode,
