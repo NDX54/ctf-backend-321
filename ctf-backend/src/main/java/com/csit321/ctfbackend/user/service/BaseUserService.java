@@ -13,7 +13,6 @@ import com.csit321.ctfbackend.user.dto.external.PublicTeacherDTO;
 import com.csit321.ctfbackend.user.dto.internal.BaseUserDTO;
 import com.csit321.ctfbackend.user.dto.internal.StudentDTO;
 import com.csit321.ctfbackend.user.dto.internal.TeacherDTO;
-import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.model.Teacher;

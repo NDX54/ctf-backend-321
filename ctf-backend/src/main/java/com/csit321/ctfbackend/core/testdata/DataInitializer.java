@@ -11,7 +11,6 @@ import com.csit321.ctfbackend.user.model.Student;
 import com.csit321.ctfbackend.user.model.Teacher;
 import com.csit321.ctfbackend.user.model.Team;
 import com.csit321.ctfbackend.user.model.enums.Role;
-import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
 import com.csit321.ctfbackend.user.repository.TeamRepository;
 import com.csit321.ctfbackend.user.utility.TeamRankingUtility;

@@ -1,11 +1,7 @@
 package com.csit321.ctfbackend.core.component;
 
 import com.csit321.ctfbackend.core.config.jwt.JwtService;
-import com.csit321.ctfbackend.core.testdata.DataInitializer;
-import com.csit321.ctfbackend.core.token.Token;
 import com.csit321.ctfbackend.core.token.TokenRepository;
-import com.csit321.ctfbackend.core.token.TokenType;
-import com.csit321.ctfbackend.user.model.enums.UserType;
 import com.csit321.ctfbackend.user.model.BaseUser;
 import com.csit321.ctfbackend.user.model.enums.Role;
 import com.csit321.ctfbackend.user.repository.BaseUserRepository;
